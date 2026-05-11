@@ -1,0 +1,40 @@
+---
+description: Project context and safe working rules for VR motion analysis
+alwaysApply: true
+---
+
+# VR Motion Analysis Project
+
+This repo analyzes golf-stick swing motion from preprocessed video sessions. A valid session folder contains `mediapipe_data_full.json` with top-level `values` plus `video_processed.mp4`.
+
+Core flow:
+- `loader.py` loads a session.
+- `main.py` runs interactive OpenCV playback and exports `swing_analysis.csv`.
+- `swing_analyzer.py` is the main analysis engine.
+- `config.py` defines `realtime` and `scientific` filter profiles; `set_filter_profile()` mutates module globals.
+- `analysis.py`, `kalman.py`, `rts_smoother.py`, and `utils_filter.py` implement kinematics, Kalman filtering, RTS smoothing, despiking, and trajectory smoothing.
+- `drawing.py` and `stats_overlay.py` render overlays.
+
+Main commands:
+- `python main.py --folder "<session>" --profile scientific`
+- `python batch_article_evaluation.py --dataset-root "<dataset_root>" --out-dir "article_package/evaluation_outputs"`
+- `python visualize.py --csv swing_analysis.csv`
+- `python evaluate_filters.py`
+- `python parameter_sweep.py --folder "<session>"`
+
+Research/manuscript context:
+- `article_package/` contains HAIT manuscript drafts, final DOCX candidates, evaluation CSVs, figures, and `second_article_plan_and_prompt.md`.
+- The final first-article DOCX should preserve embedded figures, editable Word equations, Times New Roman 11 pt, and HAIT margins.
+- Fig. 2 is illustrative only; replacing it does not require recalculating CSVs/graphs unless the quantitative dataset changes.
+
+Scientific caution:
+- Raw markerless landmarks are not ground truth.
+- Diagnostic validation/sensitivity/ablation outputs should not be overclaimed as controlled accuracy evidence.
+- Smoothness index and path efficiency are comparatively stable; derivative-heavy metrics are exploratory under heterogeneous videos.
+
+Working cautions:
+- `main.py` has top-level execution and should not be imported casually.
+- `main.py` writes `swing_analysis.csv` to the current working directory.
+- Avoid overwriting user DOCX files that may be open in Word; save new versions if locked.
+- When editing DOCX programmatically, do not assign text to runs containing drawings, or embedded images can disappear.
+- Do not commit Office lock files (`~$*.docx`), pycache, or temporary extraction artifacts.
