@@ -24,6 +24,8 @@ Main commands:
 
 Research/manuscript context:
 - `article_package/` contains HAIT manuscript drafts, final DOCX candidates, evaluation CSVs, figures, and `second_article_plan_and_prompt.md`.
+- Current accepted first-article DOCX: `article_package/Стаття_Аспірант_Синюк_HAIT_aligned_final_v4.docx`; the earlier figures-only baseline `..._wordsafe_v3.docx` is kept for reference.
+- `article_package/fix_hait_formatting.py` is the reusable HAIT formatter (metadata, references, Ukrainian block, author-info table, headers/footers). When formatting a new manuscript, clone it and swap the constants instead of writing a new script. The full verified HAIT recipe is documented in `second_article_plan_and_prompt.md`.
 - The final first-article DOCX should preserve embedded figures, editable Word equations, Times New Roman 11 pt, and HAIT margins.
 - Fig. 2 is illustrative only; replacing it does not require recalculating CSVs/graphs unless the quantitative dataset changes.
 
@@ -36,5 +38,5 @@ Working cautions:
 - `main.py` has top-level execution and should not be imported casually.
 - `main.py` writes `swing_analysis.csv` to the current working directory.
 - Avoid overwriting user DOCX files that may be open in Word; save new versions if locked.
-- When editing DOCX programmatically, do not assign text to runs containing drawings, or embedded images can disappear.
+- When editing DOCX programmatically, do not assign text to runs containing drawings, or embedded images can disappear. In particular, modify the "About the Authors" table in place; never delete and recreate it, or the photo cells are lost.
 - Do not commit Office lock files (`~$*.docx`), pycache, or temporary extraction artifacts.

@@ -139,8 +139,10 @@ Important: `config.set_filter_profile()` mutates module-level constants. Be care
 
 The `article_package/` directory contains manuscript materials and generated figures. Important files include:
 
-- final HAIT candidate with figures: `Стаття_Аспірант_Синюк_HAIT_aligned_final_with_figures_wordsafe.docx`;
-- second article planning prompt: `second_article_plan_and_prompt.md`;
+- final HAIT-formatted candidate: `Стаття_Аспірант_Синюк_HAIT_aligned_final_v4.docx` (13 pages, English + Ukrainian metadata, IEEE references with Scopus/DOI links, author-info table with photos);
+- earlier figures-only baseline kept for reference: `Стаття_Аспірант_Синюк_HAIT_aligned_final_with_figures_wordsafe_v3.docx`;
+- reusable HAIT formatter script: `fix_hait_formatting.py` (rebuilds metadata, references, Ukrainian block, author-info table, headers/footers; preserves embedded images in table cells);
+- second article planning prompt with the verified HAIT recipe: `second_article_plan_and_prompt.md`;
 - generated evaluation outputs: `evaluation_outputs/`;
 - generated article figures: `evaluation_outputs/figures/`.
 
