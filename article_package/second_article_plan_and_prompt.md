@@ -50,7 +50,8 @@ This section was added after inspecting the actual project state, not just the a
 
 The first article was prepared as a HAIT-aligned manuscript and accepted format-wise by the editors:
 
-- Final HAIT-formatted DOCX: `article_package/Стаття_Аспірант_Синюк_HAIT_aligned_final_v4.docx` (13 pages, 9 embedded figures preserved, 30 IEEE-style references, English + Ukrainian metadata, "About the Authors" table with photo cells).
+- Current HAIT-formatted DOCX: `article_package/Стаття_Аспірант_Синюк_HAIT_aligned_final_v5.docx` (v4 plus Group A reviewer editorial fixes: all 30 references now cited in-text, RC/CV and smoothness-index definitions added, body-segment metrics flagged as out of scope, AI-use disclosure relocated to the declarations block, split Conclusions sentence merged, numeral/en-dash normalization; 9 embedded figures and the "About the Authors" photo table preserved).
+- Prior aligned final (kept for reference): `article_package/Стаття_Аспірант_Синюк_HAIT_aligned_final_v4.docx` (13 pages, 9 embedded figures preserved, 30 IEEE-style references, English + Ukrainian metadata, "About the Authors" table with photo cells).
 - Earlier figures-only baseline (kept for archival reference): `article_package/Стаття_Аспірант_Синюк_HAIT_aligned_final_with_figures_wordsafe_v3.docx`.
 - Reusable HAIT formatter script: `article_package/fix_hait_formatting.py` (rebuilds metadata, references, Ukrainian block, author-info table, headers/footers; preserves embedded images in table cells).
 
