@@ -1,0 +1,5 @@
+Event,Visual criterion,Role
+Address,Last stable frame before takeaway,Time-origin diagnostic
+Top of backswing,Maximal backswing extent before reversal,Compared with transition proxy
+Downswing transition,First sustained motion toward impact,Compared with transition proxy
+Impact,Closest visible clubhead-ball contact,Compared with impact detector

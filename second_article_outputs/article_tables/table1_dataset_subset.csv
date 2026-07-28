@@ -1,0 +1,9 @@
+Characteristic,Full dataset,Annotated subset
+"Sessions, n",71,25
+Camera viewpoint,down-the-line: 59; face-on: 10; other: 2,down-the-line: 21; face-on: 3; other: 1
+Capture speed class,regular: 47; slow: 23; super slow motion: 1,regular: 17; slow: 8
+"Frame-rate bucket, fps",31–60: 41; ≤30: 30,31–60: 18; ≤30: 7
+Resolution bucket,≥1080 p: 43; <720 p: 14; 720–1080 p: 14,≥1080 p: 17; 720–1080 p: 5; <720 p: 3
+Quality grade,medium: 47; good: 12; difficult: 12,medium: 17; difficult: 4; good: 4
+Club type,driver: 32; iron: 23; unknown: 16,driver: 12; iron: 7; unknown: 6
+"Clubhead control points, n",-,260 (in 25 sessions)

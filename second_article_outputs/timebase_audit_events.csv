@@ -1,0 +1,76 @@
+session_id,comparison,manual_event,auto_source,manual_frame,automatic_frame,signed_error_frames,absolute_error_frames,manual_pts_s,automatic_pts_s,signed_error_pts_ms
+36b05de8-5e98-425f-8b72-8e505337e150,transition proxy vs manual top,top_backswing,shared transition proxy,54,15,-39,39,1.1261333333333332,0.3128222222222221,-813.3111111111111
+36b05de8-5e98-425f-8b72-8e505337e150,transition proxy vs manual downswing transition,downswing_transition,shared transition proxy,56,15,-41,41,1.1678333333333333,0.3128222222222221,-855.0111111111112
+36b05de8-5e98-425f-8b72-8e505337e150,impact detector vs manual impact,impact,impact detector,73,21,-52,52,1.5223555555555555,0.43794444444444447,-1084.411111111111
+82f22494-5871-41de-aebc-9d2012ce6571,transition proxy vs manual top,top_backswing,shared transition proxy,24,1,-23,23,0.8,0.03333333333333344,-766.6666666666666
+82f22494-5871-41de-aebc-9d2012ce6571,transition proxy vs manual downswing transition,downswing_transition,shared transition proxy,26,1,-25,25,0.8666666666666667,0.03333333333333344,-833.3333333333333
+82f22494-5871-41de-aebc-9d2012ce6571,impact detector vs manual impact,impact,impact detector,33,12,-21,21,1.1,0.3999999999999999,-700.0000000000002
+c638dd17-dbb3-4068-bb40-957442fe9ec9,transition proxy vs manual top,top_backswing,shared transition proxy,211,47,-164,164,3.5166666666666666,0.7833333333333334,-2733.3333333333335
+c638dd17-dbb3-4068-bb40-957442fe9ec9,transition proxy vs manual downswing transition,downswing_transition,shared transition proxy,215,47,-168,168,3.583333333333334,0.7833333333333334,-2800.000000000001
+c638dd17-dbb3-4068-bb40-957442fe9ec9,impact detector vs manual impact,impact,impact detector,293,71,-222,222,4.883333333333334,1.1833333333333333,-3700.0
+81681211-21c8-4d55-9d89-095b3a80d022,transition proxy vs manual top,top_backswing,shared transition proxy,415,0,-415,415,8.3,0.0,-8300.0
+81681211-21c8-4d55-9d89-095b3a80d022,transition proxy vs manual downswing transition,downswing_transition,shared transition proxy,421,0,-421,421,8.42,0.0,-8420.0
+81681211-21c8-4d55-9d89-095b3a80d022,impact detector vs manual impact,impact,impact detector,535,1,-534,534,10.7,0.02,-10680.0
+2850af90-f8fc-4050-a178-b659098e69df,transition proxy vs manual top,top_backswing,shared transition proxy,53,10,-43,43,1.7666666666666666,0.3333333333333333,-1433.3333333333333
+2850af90-f8fc-4050-a178-b659098e69df,transition proxy vs manual downswing transition,downswing_transition,shared transition proxy,54,10,-44,44,1.8,0.3333333333333333,-1466.6666666666667
+2850af90-f8fc-4050-a178-b659098e69df,impact detector vs manual impact,impact,impact detector,59,42,-17,17,1.9666666666666666,1.4,-566.6666666666666
+2ac2bc4c-b28e-4adf-a94e-a1227f7801d9,transition proxy vs manual top,top_backswing,shared transition proxy,123,11,-112,112,4.1000000000000005,0.3666666666666667,-3733.333333333334
+2ac2bc4c-b28e-4adf-a94e-a1227f7801d9,transition proxy vs manual downswing transition,downswing_transition,shared transition proxy,125,11,-114,114,4.166666666666667,0.3666666666666667,-3800.0000000000005
+2ac2bc4c-b28e-4adf-a94e-a1227f7801d9,impact detector vs manual impact,impact,impact detector,131,29,-102,102,4.366666666666667,0.9666666666666668,-3400.0000000000005
+32fec03e-0046-4581-885b-ef0d7f174e53,transition proxy vs manual top,top_backswing,shared transition proxy,90,49,-41,41,3.0,1.6333333333333333,-1366.6666666666667
+32fec03e-0046-4581-885b-ef0d7f174e53,transition proxy vs manual downswing transition,downswing_transition,shared transition proxy,91,49,-42,42,3.033333333333333,1.6333333333333333,-1400.0
+32fec03e-0046-4581-885b-ef0d7f174e53,impact detector vs manual impact,impact,impact detector,97,81,-16,16,3.2333333333333334,2.7,-533.3333333333333
+3d47c3b9-21d9-4794-995d-52804115fb8b,transition proxy vs manual top,top_backswing,shared transition proxy,26,1,-25,25,0.52,0.020000000000000018,-500.0
+3d47c3b9-21d9-4794-995d-52804115fb8b,transition proxy vs manual downswing transition,downswing_transition,shared transition proxy,28,1,-27,27,0.56,0.020000000000000018,-540.0
+3d47c3b9-21d9-4794-995d-52804115fb8b,impact detector vs manual impact,impact,impact detector,37,9,-28,28,0.74,0.17999999999999994,-560.0
+42f8729a-ed28-45a2-bf9b-397d2d698bb0,transition proxy vs manual top,top_backswing,shared transition proxy,43,5,-38,38,0.8600000000000001,0.10000000000000009,-760.0
+42f8729a-ed28-45a2-bf9b-397d2d698bb0,transition proxy vs manual downswing transition,downswing_transition,shared transition proxy,46,5,-41,41,0.9199999999999999,0.10000000000000009,-819.9999999999999
+42f8729a-ed28-45a2-bf9b-397d2d698bb0,impact detector vs manual impact,impact,impact detector,58,15,-43,43,1.1600000000000001,0.30000000000000004,-860.0000000000001
+b95e3543-d28d-49db-be02-bbee7efb8425,transition proxy vs manual top,top_backswing,shared transition proxy,25,0,-25,25,0.5,0.0,-500.0
+b95e3543-d28d-49db-be02-bbee7efb8425,transition proxy vs manual downswing transition,downswing_transition,shared transition proxy,27,0,-27,27,0.54,0.0,-540.0
+b95e3543-d28d-49db-be02-bbee7efb8425,impact detector vs manual impact,impact,impact detector,38,1,-37,37,0.76,0.020000000000000018,-740.0
+e7490da1-a2fa-4e53-ab66-4e9927d0b4d3,transition proxy vs manual top,top_backswing,shared transition proxy,30,3,-27,27,0.6000000000000001,0.06000000000000005,-540.0
+e7490da1-a2fa-4e53-ab66-4e9927d0b4d3,transition proxy vs manual downswing transition,downswing_transition,shared transition proxy,32,3,-29,29,0.6399999999999999,0.06000000000000005,-579.9999999999999
+e7490da1-a2fa-4e53-ab66-4e9927d0b4d3,impact detector vs manual impact,impact,impact detector,42,9,-33,33,0.8400000000000001,0.17999999999999994,-660.0000000000001
+e940142a-d4bc-4cee-a6de-828b05ab40a7,transition proxy vs manual top,top_backswing,shared transition proxy,32,2,-30,30,0.6399999999999999,0.040000000000000036,-599.9999999999999
+e940142a-d4bc-4cee-a6de-828b05ab40a7,transition proxy vs manual downswing transition,downswing_transition,shared transition proxy,34,2,-32,32,0.6799999999999999,0.040000000000000036,-639.9999999999999
+e940142a-d4bc-4cee-a6de-828b05ab40a7,impact detector vs manual impact,impact,impact detector,44,11,-33,33,0.8799999999999999,0.21999999999999997,-659.9999999999999
+eb859af6-2991-42e4-9345-05d3baf63c6e,transition proxy vs manual top,top_backswing,shared transition proxy,162,32,-130,130,5.4,1.0666666666666669,-4333.333333333334
+eb859af6-2991-42e4-9345-05d3baf63c6e,transition proxy vs manual downswing transition,downswing_transition,shared transition proxy,170,32,-138,138,5.666666666666666,1.0666666666666669,-4600.0
+eb859af6-2991-42e4-9345-05d3baf63c6e,impact detector vs manual impact,impact,impact detector,242,228,-14,14,8.066666666666666,7.6,-466.6666666666668
+f0647c16-5b92-48b6-a06a-d05d86fe8145,transition proxy vs manual top,top_backswing,shared transition proxy,43,16,-27,27,0.8600000000000001,0.32000000000000006,-540.0
+f0647c16-5b92-48b6-a06a-d05d86fe8145,transition proxy vs manual downswing transition,downswing_transition,shared transition proxy,45,16,-29,29,0.8999999999999999,0.32000000000000006,-579.9999999999999
+f0647c16-5b92-48b6-a06a-d05d86fe8145,impact detector vs manual impact,impact,impact detector,56,27,-29,29,1.12,0.54,-580.0000000000001
+57660e2f-8425-445f-bca0-17c6e557f1b0,transition proxy vs manual top,top_backswing,shared transition proxy,180,0,-180,180,3.6,0.0,-3600.0
+57660e2f-8425-445f-bca0-17c6e557f1b0,transition proxy vs manual downswing transition,downswing_transition,shared transition proxy,184,0,-184,184,3.68,0.0,-3680.0
+57660e2f-8425-445f-bca0-17c6e557f1b0,impact detector vs manual impact,impact,impact detector,243,1,-242,242,4.86,0.02,-4840.000000000001
+332a7a76-cfa3-449e-9150-f93050fed050,transition proxy vs manual top,top_backswing,shared transition proxy,51,5,-46,46,1.02,0.10000000000000009,-919.9999999999999
+332a7a76-cfa3-449e-9150-f93050fed050,transition proxy vs manual downswing transition,downswing_transition,shared transition proxy,53,5,-48,48,1.06,0.10000000000000009,-960.0
+332a7a76-cfa3-449e-9150-f93050fed050,impact detector vs manual impact,impact,impact detector,63,18,-45,45,1.2599999999999998,0.3600000000000001,-899.9999999999997
+7473617c-26a8-428f-9ba6-fc51dd7d2156,transition proxy vs manual top,top_backswing,shared transition proxy,44,1,-43,43,0.8799999999999999,0.020000000000000018,-859.9999999999999
+7473617c-26a8-428f-9ba6-fc51dd7d2156,transition proxy vs manual downswing transition,downswing_transition,shared transition proxy,47,1,-46,46,0.94,0.020000000000000018,-919.9999999999999
+7473617c-26a8-428f-9ba6-fc51dd7d2156,impact detector vs manual impact,impact,impact detector,61,13,-48,48,1.2200000000000002,0.26,-960.0000000000002
+7f7bf52f-1a8f-4c38-8d68-41b634af50ab,transition proxy vs manual top,top_backswing,shared transition proxy,34,5,-29,29,0.6799999999999999,0.10000000000000009,-579.9999999999999
+7f7bf52f-1a8f-4c38-8d68-41b634af50ab,transition proxy vs manual downswing transition,downswing_transition,shared transition proxy,36,5,-31,31,0.72,0.10000000000000009,-619.9999999999999
+7f7bf52f-1a8f-4c38-8d68-41b634af50ab,impact detector vs manual impact,impact,impact detector,45,10,-35,35,0.8999999999999999,0.19999999999999996,-700.0
+82b83897-42aa-447f-82ea-5e471706e7c5,transition proxy vs manual top,top_backswing,shared transition proxy,38,2,-36,36,0.6333333333333333,0.03333333333333344,-599.9999999999999
+82b83897-42aa-447f-82ea-5e471706e7c5,transition proxy vs manual downswing transition,downswing_transition,shared transition proxy,41,2,-39,39,0.6833333333333333,0.03333333333333344,-649.9999999999999
+82b83897-42aa-447f-82ea-5e471706e7c5,impact detector vs manual impact,impact,impact detector,51,12,-39,39,0.8500000000000001,0.19999999999999996,-650.0000000000001
+dfd57aa0-581d-4580-bc43-2a329277309b,transition proxy vs manual top,top_backswing,shared transition proxy,149,5,-144,144,4.966666666666667,0.16666666666666674,-4800.0
+dfd57aa0-581d-4580-bc43-2a329277309b,transition proxy vs manual downswing transition,downswing_transition,shared transition proxy,154,5,-149,149,5.133333333333334,0.16666666666666674,-4966.666666666667
+dfd57aa0-581d-4580-bc43-2a329277309b,impact detector vs manual impact,impact,impact detector,183,108,-75,75,6.1,3.5999999999999996,-2500.0
+ed241630-f662-4957-b17f-1f485cf04683,transition proxy vs manual top,top_backswing,shared transition proxy,55,9,-46,46,1.1,0.17999999999999994,-920.0000000000001
+ed241630-f662-4957-b17f-1f485cf04683,transition proxy vs manual downswing transition,downswing_transition,shared transition proxy,59,9,-50,50,1.1800000000000002,0.17999999999999994,-1000.0000000000002
+ed241630-f662-4957-b17f-1f485cf04683,impact detector vs manual impact,impact,impact detector,68,26,-42,42,1.3599999999999999,0.52,-839.9999999999999
+ba749048-28f5-497e-8d85-fcbcfedb6f8c,transition proxy vs manual top,top_backswing,shared transition proxy,127,31,-96,96,2.1187833333333335,0.5171833333333333,-1601.6000000000001
+ba749048-28f5-497e-8d85-fcbcfedb6f8c,transition proxy vs manual downswing transition,downswing_transition,shared transition proxy,130,31,-99,99,2.168833333333333,0.5171833333333333,-1651.6499999999999
+ba749048-28f5-497e-8d85-fcbcfedb6f8c,impact detector vs manual impact,impact,impact detector,147,110,-37,37,2.45245,1.8351666666666666,-617.2833333333332
+3c77a7e3-9d0f-43f4-bbfa-c142c7b24bf1,transition proxy vs manual top,top_backswing,shared transition proxy,127,53,-74,74,2.1187833333333335,0.8842166666666667,-1234.5666666666668
+3c77a7e3-9d0f-43f4-bbfa-c142c7b24bf1,transition proxy vs manual downswing transition,downswing_transition,shared transition proxy,130,53,-77,77,2.168833333333333,0.8842166666666667,-1284.6166666666666
+3c77a7e3-9d0f-43f4-bbfa-c142c7b24bf1,impact detector vs manual impact,impact,impact detector,147,90,-57,57,2.45245,1.5015,-950.9499999999997
+511a396b-aa38-4056-a980-76723ed0c05f,transition proxy vs manual top,top_backswing,shared transition proxy,127,17,-110,110,2.1187833333333335,0.2836166666666667,-1835.1666666666667
+511a396b-aa38-4056-a980-76723ed0c05f,transition proxy vs manual downswing transition,downswing_transition,shared transition proxy,131,17,-114,114,2.1855166666666666,0.2836166666666667,-1901.8999999999999
+511a396b-aa38-4056-a980-76723ed0c05f,impact detector vs manual impact,impact,impact detector,147,98,-49,49,2.45245,1.6349666666666667,-817.4833333333331
+48c9026f-11c4-410d-82ec-f33d477d9db6,transition proxy vs manual top,top_backswing,shared transition proxy,174,55,-119,119,5.8,1.8333333333333335,-3966.6666666666665
+48c9026f-11c4-410d-82ec-f33d477d9db6,transition proxy vs manual downswing transition,downswing_transition,shared transition proxy,180,55,-125,125,6.0,1.8333333333333335,-4166.666666666666
+48c9026f-11c4-410d-82ec-f33d477d9db6,impact detector vs manual impact,impact,impact detector,238,110,-128,128,7.933333333333334,3.666666666666667,-4266.666666666667

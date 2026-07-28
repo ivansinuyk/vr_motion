@@ -1,0 +1,17 @@
+dimension,value,n_event_sessions,n_point_sessions
+viewpoint,dtl,21,9
+viewpoint,face_on,3,2
+viewpoint,other,1,1
+motion_class,regular,17,9
+motion_class,slow,8,3
+quality_grade,medium,17,6
+quality_grade,difficult,4,2
+quality_grade,good,4,4
+club,driver,12,3
+club,iron,7,4
+club,unknown,6,5
+fps_bucket,31-60,18,9
+fps_bucket,<=30,7,3
+resolution_bucket,1080p+,17,7
+resolution_bucket,720-1080p,5,3
+resolution_bucket,<720p,3,2

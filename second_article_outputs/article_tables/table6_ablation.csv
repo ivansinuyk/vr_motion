@@ -1,0 +1,7 @@
+Stage,"Δpoints, n","Δraw, cm","RMS jerk, m/s^3"
+Raw landmarks,0,0.0,17334
+Median only,143,15.3,14448
+Kalman only,157,9.4,881
+Kalman + RTS,162,170.2,0.43
+Kalman + RTS + despiking,0,170.2,0.43
+Full pipeline,162,2.3,11871

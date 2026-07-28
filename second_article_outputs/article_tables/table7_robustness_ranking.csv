@@ -1,0 +1,9 @@
+Metric,"Median symmetric |change|, %",Scenarios low/moderate/high,Interpretation
+Smoothness index,10.0,6/6/0,Candidate only
+Path efficiency,14.2,6/3/3,Condition-dependent
+Maximum speed,24.2,4/2/6,High perturbation sensitivity
+Maximum angular velocity,25.5,5/1/6,High perturbation sensitivity
+Curvature RMS,39.8,4/1/7,High perturbation sensitivity
+Maximum acceleration,48.9,4/1/7,High perturbation sensitivity
+Backswing peak speed,53.9,3/2/7,High perturbation sensitivity
+Swing tempo,75.4,4/0/8,High perturbation sensitivity
