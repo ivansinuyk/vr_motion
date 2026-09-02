@@ -20,12 +20,13 @@ Run:
 
 from __future__ import annotations
 
+import argparse
+
 import numpy as np
 import pandas as pd
 
 import second_article_common as common
-
-TABLES_DIR = common.OUTPUT_DIR / "article_tables"
+from pathlib import Path
 
 # Perturbation scenarios grouped for the compact sensitivity table.
 SCENARIO_GROUPS = {
@@ -79,8 +80,11 @@ PHASE_LABELS = {
 
 def table1_dataset_subset() -> pd.DataFrame:
     meta = common.load_dataset_metadata()
-    subset = pd.read_csv(common.OUTPUT_DIR / "reference_subset.csv")
-    ann = pd.read_csv(common.REFERENCE_ANNOTATIONS_CSV)
+    subset = pd.read_csv(common.REFERENCE_SUBSET_CSV)
+    ann_path = common.CONSENSUS_ANNOTATIONS_CSV
+    if not ann_path.exists():
+        ann_path = common.REFERENCE_ANNOTATIONS_CSV
+    ann = pd.read_csv(ann_path)
     pts = ann[ann["point_name"].astype(str).str.len() > 0]
     annotated_ids = set(subset["session_id"].astype(str))
     sub_meta = meta[meta["session_id"].astype(str).isin(annotated_ids)]
@@ -307,7 +311,27 @@ def table7_robustness_ranking() -> pd.DataFrame:
 
 
 def main():
-    TABLES_DIR.mkdir(parents=True, exist_ok=True)
+    parser = argparse.ArgumentParser(description="Build article-2 consolidated tables.")
+    parser.add_argument(
+        "--input-dir",
+        default=None,
+        help="Directory containing analysis CSVs (default: second_article_outputs).",
+    )
+    parser.add_argument(
+        "--out-dir",
+        default=None,
+        help="Directory for article_tables/ (default: <input-dir>/article_tables).",
+    )
+    args = parser.parse_args()
+
+    if args.input_dir:
+        common.configure_article2_outputs(args.input_dir)
+    else:
+        common.ensure_output_dirs()
+
+    tables_dir = Path(args.out_dir) if args.out_dir else (common.OUTPUT_DIR / "article_tables")
+    tables_dir.mkdir(parents=True, exist_ok=True)
+
     builders = {
         "table1_dataset_subset": table1_dataset_subset,
         "table2_annotation_protocol": table2_annotation_protocol,
@@ -320,11 +344,11 @@ def main():
     md_parts = ["# Article 2 - consolidated tables\n"]
     for name, fn in builders.items():
         df = fn()
-        df.to_csv(TABLES_DIR / f"{name}.csv", index=False)
+        df.to_csv(tables_dir / f"{name}.csv", index=False)
         md_parts.append(f"## {name}\n\n{df.to_string(index=False)}\n")
         print(f"wrote {name}.csv ({len(df)} rows)")
-    (TABLES_DIR / "article_tables.md").write_text("\n".join(md_parts), encoding="utf-8")
-    print(f"wrote {TABLES_DIR / 'article_tables.md'}")
+    (tables_dir / "article_tables.md").write_text("\n".join(md_parts), encoding="utf-8")
+    print(f"wrote {tables_dir / 'article_tables.md'}")
 
 
 if __name__ == "__main__":

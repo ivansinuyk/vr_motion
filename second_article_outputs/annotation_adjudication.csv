@@ -1,0 +1,251 @@
+disagreement_id,kind,session_id,event_name,reference_frame,decision,consensus_reference_frame,consensus_x_px,consensus_y_px,adjudication_status,reason,adjudicator_id
+D0001,event,2850af90-f8fc-4050-a178-b659098e69df,address,,mean,32,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0002,event,2850af90-f8fc-4050-a178-b659098e69df,downswing_transition,,mean,55,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0003,event,2850af90-f8fc-4050-a178-b659098e69df,impact,,mean,58,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0004,event,2850af90-f8fc-4050-a178-b659098e69df,top_backswing,,mean,54,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0005,event,2ac2bc4c-b28e-4adf-a94e-a1227f7801d9,address,,mean,98,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0006,event,2ac2bc4c-b28e-4adf-a94e-a1227f7801d9,downswing_transition,,mean,127,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0007,event,2ac2bc4c-b28e-4adf-a94e-a1227f7801d9,impact,,mean,131,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0008,event,2ac2bc4c-b28e-4adf-a94e-a1227f7801d9,top_backswing,,mean,123,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0009,event,32fec03e-0046-4581-885b-ef0d7f174e53,address,,mean,75,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0010,event,32fec03e-0046-4581-885b-ef0d7f174e53,downswing_transition,,mean,90,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0011,event,32fec03e-0046-4581-885b-ef0d7f174e53,impact,,mean,106,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0012,event,32fec03e-0046-4581-885b-ef0d7f174e53,top_backswing,,mean,86,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0013,event,332a7a76-cfa3-449e-9150-f93050fed050,address,,mean,4,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0014,event,332a7a76-cfa3-449e-9150-f93050fed050,downswing_transition,,mean,54,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0015,event,332a7a76-cfa3-449e-9150-f93050fed050,impact,,mean,69,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0016,event,332a7a76-cfa3-449e-9150-f93050fed050,top_backswing,,mean,49,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0017,event,36b05de8-5e98-425f-8b72-8e505337e150,address,,mean,0,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0018,event,36b05de8-5e98-425f-8b72-8e505337e150,downswing_transition,,mean,60,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0019,event,36b05de8-5e98-425f-8b72-8e505337e150,impact,,mean,70,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0020,event,36b05de8-5e98-425f-8b72-8e505337e150,top_backswing,,mean,48,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0021,event,3c77a7e3-9d0f-43f4-bbfa-c142c7b24bf1,address,,mean,59,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0022,event,3c77a7e3-9d0f-43f4-bbfa-c142c7b24bf1,downswing_transition,,mean,143,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0023,event,3c77a7e3-9d0f-43f4-bbfa-c142c7b24bf1,impact,,mean,152,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0024,event,3c77a7e3-9d0f-43f4-bbfa-c142c7b24bf1,top_backswing,,mean,126,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0025,event,3d47c3b9-21d9-4794-995d-52804115fb8b,address,,mean,4,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0026,event,3d47c3b9-21d9-4794-995d-52804115fb8b,downswing_transition,,mean,30,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0027,event,3d47c3b9-21d9-4794-995d-52804115fb8b,impact,,mean,35,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0028,event,3d47c3b9-21d9-4794-995d-52804115fb8b,top_backswing,,mean,28,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0029,event,42f8729a-ed28-45a2-bf9b-397d2d698bb0,address,,mean,0,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0030,event,42f8729a-ed28-45a2-bf9b-397d2d698bb0,downswing_transition,,mean,41,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0031,event,42f8729a-ed28-45a2-bf9b-397d2d698bb0,impact,,mean,56,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0032,event,42f8729a-ed28-45a2-bf9b-397d2d698bb0,top_backswing,,mean,39,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0033,event,48c9026f-11c4-410d-82ec-f33d477d9db6,address,,mean,34,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0034,event,48c9026f-11c4-410d-82ec-f33d477d9db6,downswing_transition,,mean,184,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0035,event,48c9026f-11c4-410d-82ec-f33d477d9db6,impact,,mean,236,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0036,event,48c9026f-11c4-410d-82ec-f33d477d9db6,top_backswing,,mean,180,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0037,event,511a396b-aa38-4056-a980-76723ed0c05f,address,,mean,56,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0038,event,511a396b-aa38-4056-a980-76723ed0c05f,downswing_transition,,mean,132,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0039,event,511a396b-aa38-4056-a980-76723ed0c05f,impact,,mean,143,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0040,event,511a396b-aa38-4056-a980-76723ed0c05f,top_backswing,,mean,130,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0041,event,57660e2f-8425-445f-bca0-17c6e557f1b0,address,,mean,25,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0042,event,57660e2f-8425-445f-bca0-17c6e557f1b0,downswing_transition,,mean,180,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0043,event,57660e2f-8425-445f-bca0-17c6e557f1b0,impact,,mean,242,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0044,event,57660e2f-8425-445f-bca0-17c6e557f1b0,top_backswing,,mean,177,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0045,event,7473617c-26a8-428f-9ba6-fc51dd7d2156,address,,mean,3,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0046,event,7473617c-26a8-428f-9ba6-fc51dd7d2156,downswing_transition,,mean,48,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0047,event,7473617c-26a8-428f-9ba6-fc51dd7d2156,impact,,mean,60,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0048,event,7473617c-26a8-428f-9ba6-fc51dd7d2156,top_backswing,,mean,40,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0049,event,7f7bf52f-1a8f-4c38-8d68-41b634af50ab,address,,mean,2,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0050,event,7f7bf52f-1a8f-4c38-8d68-41b634af50ab,downswing_transition,,mean,38,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0051,event,7f7bf52f-1a8f-4c38-8d68-41b634af50ab,impact,,mean,44,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0052,event,7f7bf52f-1a8f-4c38-8d68-41b634af50ab,top_backswing,,mean,36,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0053,event,81681211-21c8-4d55-9d89-095b3a80d022,address,,mean,58,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0054,event,81681211-21c8-4d55-9d89-095b3a80d022,downswing_transition,,mean,422,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0055,event,81681211-21c8-4d55-9d89-095b3a80d022,impact,,mean,532,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0056,event,81681211-21c8-4d55-9d89-095b3a80d022,top_backswing,,mean,412,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0057,event,82b83897-42aa-447f-82ea-5e471706e7c5,address,,mean,4,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0058,event,82b83897-42aa-447f-82ea-5e471706e7c5,downswing_transition,,mean,36,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0059,event,82b83897-42aa-447f-82ea-5e471706e7c5,impact,,mean,48,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0060,event,82b83897-42aa-447f-82ea-5e471706e7c5,top_backswing,,mean,32,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0061,event,82f22494-5871-41de-aebc-9d2012ce6571,address,,mean,0,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0062,event,82f22494-5871-41de-aebc-9d2012ce6571,downswing_transition,,mean,24,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0063,event,82f22494-5871-41de-aebc-9d2012ce6571,impact,,mean,31,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0064,event,82f22494-5871-41de-aebc-9d2012ce6571,top_backswing,,mean,22,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0065,event,b95e3543-d28d-49db-be02-bbee7efb8425,address,,mean,4,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0066,event,b95e3543-d28d-49db-be02-bbee7efb8425,downswing_transition,,mean,28,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0067,event,b95e3543-d28d-49db-be02-bbee7efb8425,impact,,mean,38,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0068,event,b95e3543-d28d-49db-be02-bbee7efb8425,top_backswing,,mean,22,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0069,event,ba749048-28f5-497e-8d85-fcbcfedb6f8c,address,,mean,63,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0070,event,ba749048-28f5-497e-8d85-fcbcfedb6f8c,downswing_transition,,mean,132,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0071,event,ba749048-28f5-497e-8d85-fcbcfedb6f8c,impact,,mean,147,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0072,event,ba749048-28f5-497e-8d85-fcbcfedb6f8c,top_backswing,,mean,130,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0073,event,c638dd17-dbb3-4068-bb40-957442fe9ec9,address,,mean,27,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0074,event,c638dd17-dbb3-4068-bb40-957442fe9ec9,downswing_transition,,mean,216,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0075,event,c638dd17-dbb3-4068-bb40-957442fe9ec9,impact,,mean,291,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0076,event,c638dd17-dbb3-4068-bb40-957442fe9ec9,top_backswing,,mean,211,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0077,event,dfd57aa0-581d-4580-bc43-2a329277309b,address,,mean,60,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0078,event,dfd57aa0-581d-4580-bc43-2a329277309b,downswing_transition,,mean,158,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0079,event,dfd57aa0-581d-4580-bc43-2a329277309b,impact,,mean,183,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0080,event,dfd57aa0-581d-4580-bc43-2a329277309b,top_backswing,,mean,138,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0081,event,e7490da1-a2fa-4e53-ab66-4e9927d0b4d3,address,,mean,0,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0082,event,e7490da1-a2fa-4e53-ab66-4e9927d0b4d3,downswing_transition,,mean,29,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0083,event,e7490da1-a2fa-4e53-ab66-4e9927d0b4d3,impact,,mean,45,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0084,event,e7490da1-a2fa-4e53-ab66-4e9927d0b4d3,top_backswing,,mean,28,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0085,event,e940142a-d4bc-4cee-a6de-828b05ab40a7,address,,mean,0,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0086,event,e940142a-d4bc-4cee-a6de-828b05ab40a7,downswing_transition,,mean,33,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0087,event,e940142a-d4bc-4cee-a6de-828b05ab40a7,impact,,mean,44,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0088,event,e940142a-d4bc-4cee-a6de-828b05ab40a7,top_backswing,,mean,30,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0089,event,eb859af6-2991-42e4-9345-05d3baf63c6e,address,,mean,2,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0090,event,eb859af6-2991-42e4-9345-05d3baf63c6e,downswing_transition,,mean,172,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0091,event,eb859af6-2991-42e4-9345-05d3baf63c6e,impact,,mean,242,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0092,event,eb859af6-2991-42e4-9345-05d3baf63c6e,top_backswing,,mean,164,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0093,event,ed241630-f662-4957-b17f-1f485cf04683,address,,mean,6,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0094,event,ed241630-f662-4957-b17f-1f485cf04683,downswing_transition,,mean,60,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0095,event,ed241630-f662-4957-b17f-1f485cf04683,impact,,mean,66,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0096,event,ed241630-f662-4957-b17f-1f485cf04683,top_backswing,,mean,57,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0097,event,f0647c16-5b92-48b6-a06a-d05d86fe8145,address,,mean,10,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0098,event,f0647c16-5b92-48b6-a06a-d05d86fe8145,downswing_transition,,mean,50,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0099,event,f0647c16-5b92-48b6-a06a-d05d86fe8145,impact,,mean,56,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0100,event,f0647c16-5b92-48b6-a06a-d05d86fe8145,top_backswing,,mean,48,,,resolved,midpoint of Ivan and Daria frames (disclosed mean rule),Ivan Syniuk
+D0101,point,2850af90-f8fc-4050-a178-b659098e69df,,33,mean,33,390.0,668.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0102,point,2850af90-f8fc-4050-a178-b659098e69df,,44,mean,44,39.0,446.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0103,point,2850af90-f8fc-4050-a178-b659098e69df,,52,mean,52,212.5,345.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0104,point,2850af90-f8fc-4050-a178-b659098e69df,,56,mean,56,68.0,373.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0105,point,2850af90-f8fc-4050-a178-b659098e69df,,59,mean,59,361.5,607.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0106,point,2850af90-f8fc-4050-a178-b659098e69df,,63,mean,63,117.0,389.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0107,point,2ac2bc4c-b28e-4adf-a94e-a1227f7801d9,,100,mean,100,904.5,1873.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0108,point,2ac2bc4c-b28e-4adf-a94e-a1227f7801d9,,107,mean,107,356.0,1498.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0109,point,2ac2bc4c-b28e-4adf-a94e-a1227f7801d9,,122,mean,122,224.0,930.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0110,point,2ac2bc4c-b28e-4adf-a94e-a1227f7801d9,,123,mean,123,312.0,882.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0111,point,2ac2bc4c-b28e-4adf-a94e-a1227f7801d9,,132,mean,132,674.0,1570.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0112,point,2ac2bc4c-b28e-4adf-a94e-a1227f7801d9,,134,mean,134,43.5,591.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0113,point,32fec03e-0046-4581-885b-ef0d7f174e53,,71,mean,71,523.0,848.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0114,point,32fec03e-0046-4581-885b-ef0d7f174e53,,82,mean,82,210.0,509.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0115,point,32fec03e-0046-4581-885b-ef0d7f174e53,,89,mean,89,260.0,151.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0116,point,32fec03e-0046-4581-885b-ef0d7f174e53,,95,mean,95,101.0,306.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0117,point,32fec03e-0046-4581-885b-ef0d7f174e53,,97,mean,97,505.0,968.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0118,point,32fec03e-0046-4581-885b-ef0d7f174e53,,99,mean,99,473.5,583.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0119,point,332a7a76-cfa3-449e-9150-f93050fed050,,8,mean,8,1264.0,969.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0120,point,332a7a76-cfa3-449e-9150-f93050fed050,,43,mean,43,588.0,171.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0121,point,332a7a76-cfa3-449e-9150-f93050fed050,,53,mean,53,640.5,259.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0122,point,332a7a76-cfa3-449e-9150-f93050fed050,,62,mean,62,1282.5,1016.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0123,point,332a7a76-cfa3-449e-9150-f93050fed050,,67,mean,67,991.0,531.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0124,point,332a7a76-cfa3-449e-9150-f93050fed050,,69,mean,69,509.5,36.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0125,point,36b05de8-5e98-425f-8b72-8e505337e150,,1,mean,1,988.5,1640.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0126,point,36b05de8-5e98-425f-8b72-8e505337e150,,61,mean,61,258.0,957.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0127,point,36b05de8-5e98-425f-8b72-8e505337e150,,69,mean,69,1031.5,1733.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0128,point,36b05de8-5e98-425f-8b72-8e505337e150,,73,mean,73,991.0,1688.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0129,point,36b05de8-5e98-425f-8b72-8e505337e150,,80,mean,80,305.0,689.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0130,point,36b05de8-5e98-425f-8b72-8e505337e150,,83,mean,83,460.5,807.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0131,point,3c77a7e3-9d0f-43f4-bbfa-c142c7b24bf1,,59,mean,59,523.0,1670.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0132,point,3c77a7e3-9d0f-43f4-bbfa-c142c7b24bf1,,90,mean,90,39.5,1210.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0133,point,3c77a7e3-9d0f-43f4-bbfa-c142c7b24bf1,,127,mean,127,696.0,620.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0134,point,3c77a7e3-9d0f-43f4-bbfa-c142c7b24bf1,,145,mean,145,188.5,1512.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0135,point,3c77a7e3-9d0f-43f4-bbfa-c142c7b24bf1,,148,mean,148,799.5,1629.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0136,point,3c77a7e3-9d0f-43f4-bbfa-c142c7b24bf1,,160,mean,160,834.5,538.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0137,point,3d47c3b9-21d9-4794-995d-52804115fb8b,,1,mean,1,1183.0,940.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0138,point,3d47c3b9-21d9-4794-995d-52804115fb8b,,17,mean,17,509.5,90.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0139,point,3d47c3b9-21d9-4794-995d-52804115fb8b,,26,mean,26,736.0,127.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0140,point,3d47c3b9-21d9-4794-995d-52804115fb8b,,36,mean,36,892.0,735.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0141,point,3d47c3b9-21d9-4794-995d-52804115fb8b,,37,mean,37,1157.0,1000.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0142,point,3d47c3b9-21d9-4794-995d-52804115fb8b,,40,mean,40,974.5,604.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0143,point,42f8729a-ed28-45a2-bf9b-397d2d698bb0,,1,mean,1,1273.5,960.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0144,point,42f8729a-ed28-45a2-bf9b-397d2d698bb0,,24,mean,24,665.5,314.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0145,point,42f8729a-ed28-45a2-bf9b-397d2d698bb0,,43,mean,43,840.0,315.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0146,point,42f8729a-ed28-45a2-bf9b-397d2d698bb0,,46,mean,46,872.5,405.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0147,point,42f8729a-ed28-45a2-bf9b-397d2d698bb0,,58,mean,58,1227.5,989.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0148,point,42f8729a-ed28-45a2-bf9b-397d2d698bb0,,63,mean,63,860.0,363.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0149,point,48c9026f-11c4-410d-82ec-f33d477d9db6,,38,mean,38,556.5,922.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0150,point,48c9026f-11c4-410d-82ec-f33d477d9db6,,98,mean,98,383.5,780.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0151,point,48c9026f-11c4-410d-82ec-f33d477d9db6,,174,mean,174,116.5,52.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0152,point,48c9026f-11c4-410d-82ec-f33d477d9db6,,180,mean,180,102.0,82.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0153,point,48c9026f-11c4-410d-82ec-f33d477d9db6,,233,mean,233,417.5,898.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0154,point,48c9026f-11c4-410d-82ec-f33d477d9db6,,249,mean,249,374.5,701.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0155,point,511a396b-aa38-4056-a980-76723ed0c05f,,66,mean,66,458.0,1685.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0156,point,511a396b-aa38-4056-a980-76723ed0c05f,,86,mean,86,95.0,1324.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0157,point,511a396b-aa38-4056-a980-76723ed0c05f,,116,mean,116,406.0,588.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0158,point,511a396b-aa38-4056-a980-76723ed0c05f,,131,mean,131,670.5,689.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0159,point,511a396b-aa38-4056-a980-76723ed0c05f,,150,mean,150,1067.5,1179.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0160,point,511a396b-aa38-4056-a980-76723ed0c05f,,158,mean,158,876.5,502.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0161,point,57660e2f-8425-445f-bca0-17c6e557f1b0,,27,mean,27,583.5,1018.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0162,point,57660e2f-8425-445f-bca0-17c6e557f1b0,,113,mean,113,67.0,424.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0163,point,57660e2f-8425-445f-bca0-17c6e557f1b0,,213,mean,213,71.0,232.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0164,point,57660e2f-8425-445f-bca0-17c6e557f1b0,,233,mean,233,461.0,885.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0165,point,57660e2f-8425-445f-bca0-17c6e557f1b0,,265,mean,265,289.0,322.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0166,point,57660e2f-8425-445f-bca0-17c6e557f1b0,,285,mean,285,46.5,5.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0167,point,7473617c-26a8-428f-9ba6-fc51dd7d2156,,1,mean,1,890.0,1592.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0168,point,7473617c-26a8-428f-9ba6-fc51dd7d2156,,26,mean,26,257.0,336.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0169,point,7473617c-26a8-428f-9ba6-fc51dd7d2156,,47,mean,47,362.5,94.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0170,point,7473617c-26a8-428f-9ba6-fc51dd7d2156,,59,mean,59,809.5,1531.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0171,point,7473617c-26a8-428f-9ba6-fc51dd7d2156,,63,mean,63,521.5,1073.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0172,point,7473617c-26a8-428f-9ba6-fc51dd7d2156,,67,mean,67,57.5,348.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0173,point,7f7bf52f-1a8f-4c38-8d68-41b634af50ab,,3,mean,3,1268.0,944.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0174,point,7f7bf52f-1a8f-4c38-8d68-41b634af50ab,,26,mean,26,658.5,131.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0175,point,7f7bf52f-1a8f-4c38-8d68-41b634af50ab,,36,mean,36,839.0,276.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0176,point,7f7bf52f-1a8f-4c38-8d68-41b634af50ab,,43,mean,43,726.5,663.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0177,point,7f7bf52f-1a8f-4c38-8d68-41b634af50ab,,45,mean,45,1225.0,902.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0178,point,7f7bf52f-1a8f-4c38-8d68-41b634af50ab,,50,mean,50,521.5,17.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0179,point,81681211-21c8-4d55-9d89-095b3a80d022,,59,mean,59,859.5,1565.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0180,point,81681211-21c8-4d55-9d89-095b3a80d022,,273,mean,273,237.5,522.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0181,point,81681211-21c8-4d55-9d89-095b3a80d022,,502,mean,502,256.5,750.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0182,point,81681211-21c8-4d55-9d89-095b3a80d022,,522,mean,522,700.5,1410.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0183,point,81681211-21c8-4d55-9d89-095b3a80d022,,547,mean,547,752.5,1452.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0184,point,81681211-21c8-4d55-9d89-095b3a80d022,,562,mean,562,602.0,1142.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0185,point,82b83897-42aa-447f-82ea-5e471706e7c5,,3,mean,3,918.5,1492.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0186,point,82b83897-42aa-447f-82ea-5e471706e7c5,,27,mean,27,22.5,42.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0187,point,82b83897-42aa-447f-82ea-5e471706e7c5,,41,mean,41,209.0,288.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0188,point,82b83897-42aa-447f-82ea-5e471706e7c5,,50,mean,50,659.5,1285.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0189,point,82b83897-42aa-447f-82ea-5e471706e7c5,,53,mean,53,906.0,1381.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0190,point,82b83897-42aa-447f-82ea-5e471706e7c5,,57,mean,57,244.5,429.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0191,point,82f22494-5871-41de-aebc-9d2012ce6571,,1,mean,1,293.5,877.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0192,point,82f22494-5871-41de-aebc-9d2012ce6571,,21,mean,21,7.5,143.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0193,point,82f22494-5871-41de-aebc-9d2012ce6571,,27,mean,27,120.0,83.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0194,point,82f22494-5871-41de-aebc-9d2012ce6571,,32,mean,32,109.5,844.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0195,point,82f22494-5871-41de-aebc-9d2012ce6571,,34,mean,34,441.0,739.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0196,point,82f22494-5871-41de-aebc-9d2012ce6571,,36,mean,36,499.5,401.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0197,point,b95e3543-d28d-49db-be02-bbee7efb8425,,0,mean,0,1311.0,959.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0198,point,b95e3543-d28d-49db-be02-bbee7efb8425,,14,mean,14,719.5,176.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0199,point,b95e3543-d28d-49db-be02-bbee7efb8425,,27,mean,27,802.0,24.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0200,point,b95e3543-d28d-49db-be02-bbee7efb8425,,35,mean,35,852.0,583.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0201,point,b95e3543-d28d-49db-be02-bbee7efb8425,,38,mean,38,1321.5,925.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0202,point,b95e3543-d28d-49db-be02-bbee7efb8425,,41,mean,41,851.0,283.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0203,point,ba749048-28f5-497e-8d85-fcbcfedb6f8c,,64,mean,64,527.5,1638.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0204,point,ba749048-28f5-497e-8d85-fcbcfedb6f8c,,116,mean,116,526.0,637.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0205,point,ba749048-28f5-497e-8d85-fcbcfedb6f8c,,143,mean,143,129.0,1032.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0206,point,ba749048-28f5-497e-8d85-fcbcfedb6f8c,,147,mean,147,717.0,1627.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0207,point,ba749048-28f5-497e-8d85-fcbcfedb6f8c,,159,mean,159,1037.0,485.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0208,point,ba749048-28f5-497e-8d85-fcbcfedb6f8c,,173,mean,173,560.5,364.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0209,point,c638dd17-dbb3-4068-bb40-957442fe9ec9,,33,mean,33,546.5,1031.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0210,point,c638dd17-dbb3-4068-bb40-957442fe9ec9,,134,mean,134,451.0,666.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0211,point,c638dd17-dbb3-4068-bb40-957442fe9ec9,,151,mean,151,403.0,608.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0212,point,c638dd17-dbb3-4068-bb40-957442fe9ec9,,225,mean,225,366.0,525.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0213,point,c638dd17-dbb3-4068-bb40-957442fe9ec9,,277,mean,277,545.0,760.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0214,point,c638dd17-dbb3-4068-bb40-957442fe9ec9,,323,mean,323,317.0,722.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0215,point,dfd57aa0-581d-4580-bc43-2a329277309b,,58,mean,58,590.0,1069.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0216,point,dfd57aa0-581d-4580-bc43-2a329277309b,,110,mean,110,218.5,500.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0217,point,dfd57aa0-581d-4580-bc43-2a329277309b,,154,mean,154,243.0,366.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0218,point,dfd57aa0-581d-4580-bc43-2a329277309b,,179,mean,179,524.5,868.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0219,point,dfd57aa0-581d-4580-bc43-2a329277309b,,187,mean,187,538.5,1032.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0220,point,dfd57aa0-581d-4580-bc43-2a329277309b,,197,mean,197,213.0,416.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0221,point,e7490da1-a2fa-4e53-ab66-4e9927d0b4d3,,0,mean,0,979.5,1473.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0222,point,e7490da1-a2fa-4e53-ab66-4e9927d0b4d3,,17,mean,17,60.0,427.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0223,point,e7490da1-a2fa-4e53-ab66-4e9927d0b4d3,,32,mean,32,346.5,637.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0224,point,e7490da1-a2fa-4e53-ab66-4e9927d0b4d3,,39,mean,39,99.0,634.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0225,point,e7490da1-a2fa-4e53-ab66-4e9927d0b4d3,,43,mean,43,914.0,1308.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0226,point,e7490da1-a2fa-4e53-ab66-4e9927d0b4d3,,47,mean,47,204.5,501.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0227,point,e940142a-d4bc-4cee-a6de-828b05ab40a7,,1,mean,1,744.5,1004.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0228,point,e940142a-d4bc-4cee-a6de-828b05ab40a7,,25,mean,25,1248.5,163.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0229,point,e940142a-d4bc-4cee-a6de-828b05ab40a7,,34,mean,34,993.0,346.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0230,point,e940142a-d4bc-4cee-a6de-828b05ab40a7,,39,mean,39,1145.5,249.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0231,point,e940142a-d4bc-4cee-a6de-828b05ab40a7,,43,mean,43,750.0,1033.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0232,point,e940142a-d4bc-4cee-a6de-828b05ab40a7,,49,mean,49,1107.0,299.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0233,point,eb859af6-2991-42e4-9345-05d3baf63c6e,,2,mean,2,667.5,1068.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0234,point,eb859af6-2991-42e4-9345-05d3baf63c6e,,111,mean,111,54.0,150.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0235,point,eb859af6-2991-42e4-9345-05d3baf63c6e,,170,mean,170,110.5,368.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0236,point,eb859af6-2991-42e4-9345-05d3baf63c6e,,229,mean,229,367.5,817.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0237,point,eb859af6-2991-42e4-9345-05d3baf63c6e,,247,mean,247,556.5,898.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0238,point,eb859af6-2991-42e4-9345-05d3baf63c6e,,265,mean,265,114.5,422.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0239,point,ed241630-f662-4957-b17f-1f485cf04683,,1,mean,1,895.5,1633.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0240,point,ed241630-f662-4957-b17f-1f485cf04683,,33,mean,33,498.5,1150.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0241,point,ed241630-f662-4957-b17f-1f485cf04683,,55,mean,55,238.0,575.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0242,point,ed241630-f662-4957-b17f-1f485cf04683,,67,mean,67,668.5,1426.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0243,point,ed241630-f662-4957-b17f-1f485cf04683,,68,mean,68,877.5,1530.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0244,point,ed241630-f662-4957-b17f-1f485cf04683,,73,mean,73,169.5,627.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0245,point,f0647c16-5b92-48b6-a06a-d05d86fe8145,,9,mean,9,1175.5,1049.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0246,point,f0647c16-5b92-48b6-a06a-d05d86fe8145,,35,mean,35,793.5,113.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0247,point,f0647c16-5b92-48b6-a06a-d05d86fe8145,,45,mean,45,831.5,124.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0248,point,f0647c16-5b92-48b6-a06a-d05d86fe8145,,54,mean,54,1175.5,1022.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0249,point,f0647c16-5b92-48b6-a06a-d05d86fe8145,,58,mean,58,985.0,709.0,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk
+D0250,point,f0647c16-5b92-48b6-a06a-d05d86fe8145,,63,mean,63,720.5,42.5,resolved,pixel mean of Ivan and Daria clicks (disclosed mean rule),Ivan Syniuk

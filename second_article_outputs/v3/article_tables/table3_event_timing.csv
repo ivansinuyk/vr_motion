@@ -1,0 +1,4 @@
+Auto / manual,n,"Median |error|, frames","Median |error|, ms (95% CI)"
+Transition / top,25,38,780 (700–1635)
+Transition / transition,25,40,940 (660–1919)
+Impact / impact,25,40,800 (660–1022)

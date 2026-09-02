@@ -1,0 +1,5 @@
+criterion,threshold_px,points_n,percent,sessions_with_at_least_one_n
+Coordinate available at annotated frame,,150,100.0,25
+Large localization error,100.0,22,14.666666666666666,13
+Very large localization error,250.0,5,3.3333333333333335,4
+Catastrophic localization error,500.0,3,2.0,2

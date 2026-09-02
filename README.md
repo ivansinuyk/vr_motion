@@ -30,10 +30,13 @@ Python/OpenCV project for markerless golf-stick motion analysis from preprocesse
 | `drawing.py` | OpenCV drawing for body, stick, ball, and trajectory overlays. |
 | `stats_overlay.py` | On-frame metric/HUD overlay. |
 | `batch_article_evaluation.py` | Batch processing for article CSVs and figures across many sessions. |
+| `build_second_article_docx.py` | Builds Article 2 HAIT DOCX from `second_article_manuscript.md` + `second_article_outputs/v3/`. |
+| `second_article_common.py` | Shared paths/helpers for Article 2 validation pipeline. |
 | `evaluate_filters.py` | Quick raw-vs-filtered trajectory deviation/jerk checks from `swing_analysis.csv`. |
 | `parameter_sweep.py` | Parameter sweep for filter settings and Pareto-style comparison CSVs. |
 | `visualize.py` | Plots exported `swing_analysis.csv`. |
-| `article_package/` | Manuscript drafts, final DOCX candidates, article figures, evaluation outputs, and second-article plan. |
+| `article_package/` | Manuscript drafts, final DOCX candidates, article figures, evaluation outputs, publication status. |
+| `second_article_outputs/` | Article 2 annotations, agreement CSVs, and `v3/` analysis bundle. |
 | `paper_assets/` | Supporting article/media assets. |
 
 ## Session Data Format
@@ -137,25 +140,36 @@ Important: `config.set_filter_profile()` mutates module-level constants. Be care
 
 ## Research Article Assets
 
-The `article_package/` directory contains manuscript materials and generated figures. Important files include:
+**Publication status (all articles):** `article_package/research_publication_status.md`
 
-- current HAIT-formatted candidate: `Стаття_Аспірант_Синюк_HAIT_aligned_final_v5.docx` (v4 plus Group A reviewer editorial fixes: refs 23-30 now cited in-text, RC/CV and smoothness-index definitions added, body-segment metrics noted as out of scope, AI-use disclosure moved to the declarations block, split Conclusions sentence merged, numeral/en-dash normalization);
-- prior aligned final kept for reference: `Стаття_Аспірант_Синюк_HAIT_aligned_final_v4.docx` (13 pages, English + Ukrainian metadata, IEEE references with Scopus/DOI links, author-info table with photos);
-- earlier figures-only baseline kept for reference: `Стаття_Аспірант_Синюк_HAIT_aligned_final_with_figures_wordsafe_v3.docx`;
-- reusable HAIT formatter script: `fix_hait_formatting.py` (rebuilds metadata, references, Ukrainian block, author-info table, headers/footers; preserves embedded images in table cells);
-- second article planning prompt with the verified HAIT recipe: `second_article_plan_and_prompt.md`;
-- generated evaluation outputs: `evaluation_outputs/`;
-- generated article figures: `evaluation_outputs/figures/`.
+The `article_package/` directory contains manuscript materials and generated figures.
 
-For the first article, Fig. 2 is an illustrative landmark-model frame and can be replaced independently if a privacy-safe screenshot is needed. Replacing Fig. 2 does not require recalculating the quantitative CSVs/graphs unless the evaluation dataset itself changes.
+### Article 1 — method pipeline
+
+- current HAIT-formatted candidate: `Стаття_Аспірант_Синюк_HAIT_aligned_final_v5.docx`
+- prior aligned final: `..._aligned_final_v4.docx`; figures-only baseline: `..._wordsafe_v3.docx`
+- reusable HAIT formatter: `fix_hait_formatting.py`
+- batch evaluation outputs: `evaluation_outputs/`
+
+### Article 2 — reference agreement and perturbation sensitivity
+
+- text source: `second_article_manuscript.md`
+- **current DOCX:** `Стаття_Аспірант_Синюк_HAIT_article2_v4.docx` (mentor re-review)
+- fallbacks: `article2_v3.docx`, frozen `article2_v2.docx`
+- analysis + figures: `../second_article_outputs/v3/`
+- DOCX builder: `../build_second_article_docx.py`
+- planning archive + HAIT recipe: `second_article_plan_and_prompt.md`
+- completed runbook: `article2_post_annotation_publication_runbook.md`
+
+For Article 1, Fig. 2 is an illustrative landmark-model frame. Article 2 uses a schematic annotation frame. Replacing figures does not require recalculating CSVs unless the evaluation dataset changes.
 
 ## Scientific Interpretation Notes
 
 - The pipeline supports markerless 2D video analysis, not laboratory-grade 3D motion capture.
 - Raw landmark data are not ground truth.
-- Validation/sensitivity/ablation outputs should be interpreted carefully unless a controlled reference subset exists.
-- Smoothness index and path efficiency were treated as more stable indicators in the article; derivative-heavy metrics such as acceleration, angular velocity, and curvature are more exploratory under heterogeneous recordings.
-- If writing a second article, focus on validation/robustness with manual event and trajectory annotations instead of repeating the pipeline article.
+- Validation/sensitivity/ablation outputs should be interpreted carefully; Article 2 reports bounded agreement against a measured multi-rater reference (`second_article_outputs/v3/`).
+- Smoothness index and path efficiency were the least perturbation-responsive metrics in Article 2 (candidate only, not coaching tolerances); derivative-heavy metrics remain exploratory.
+- Article 2 scope and future Article 3 directions: `article_package/research_publication_status.md`.
 
 ## Dependencies
 

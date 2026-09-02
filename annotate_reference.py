@@ -88,7 +88,7 @@ def load_session_plan(path: Path | None) -> set[str] | None:
 
 
 def load_subset_sessions(dataset_root: str, session_plan: set[str] | None = None):
-    subset_path = common.OUTPUT_DIR / "reference_subset.csv"
+    subset_path = common.REFERENCE_SUBSET_CSV
     point_ids = set()
     if subset_path.exists():
         df = pd.read_csv(subset_path)

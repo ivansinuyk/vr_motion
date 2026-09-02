@@ -21,15 +21,32 @@ DEFAULT_DATASET_ROOT = (
 )
 
 # Output locations for the second article.
-OUTPUT_DIR = Path("second_article_outputs")
+ARTICLE2_ROOT = Path("second_article_outputs")
+OUTPUT_DIR = ARTICLE2_ROOT
 FIGURE_DIR = OUTPUT_DIR / "figures"
 
 # First-article outputs that we reuse as inputs (read-only).
 FIRST_ARTICLE_OUTPUTS = Path("article_package/evaluation_outputs")
 DATASET_SUMMARY_CSV = FIRST_ARTICLE_OUTPUTS / "dataset_summary.csv"
 
-# Canonical reference-annotation file produced by ``annotate_reference.py``.
-REFERENCE_ANNOTATIONS_CSV = OUTPUT_DIR / "reference_annotations.csv"
+# Canonical inputs that stay under ARTICLE2_ROOT even when --out-dir redirects
+# analysis outputs (e.g. to second_article_outputs/v3).
+REFERENCE_ANNOTATIONS_CSV = ARTICLE2_ROOT / "reference_annotations.csv"
+REFERENCE_SUBSET_CSV = ARTICLE2_ROOT / "reference_subset.csv"
+CONSENSUS_ANNOTATIONS_CSV = ARTICLE2_ROOT / "reference_annotations_consensus.csv"
+
+
+def configure_article2_outputs(out_dir: str | Path | None = None) -> Path:
+    """Redirect OUTPUT_DIR / FIGURE_DIR for a regeneration run.
+
+    Input paths such as REFERENCE_SUBSET_CSV and CONSENSUS_ANNOTATIONS_CSV remain
+    under ARTICLE2_ROOT so frozen annotation assets are not duplicated.
+    """
+    global OUTPUT_DIR, FIGURE_DIR
+    OUTPUT_DIR = ARTICLE2_ROOT if out_dir is None else Path(out_dir)
+    FIGURE_DIR = OUTPUT_DIR / "figures"
+    ensure_output_dirs()
+    return OUTPUT_DIR
 
 REFERENCE_ANNOTATION_COLUMNS = [
     "session_id",
@@ -55,6 +72,66 @@ EVENT_NAMES = ["address", "top_backswing", "downswing_transition", "impact"]
 def ensure_output_dirs() -> None:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     FIGURE_DIR.mkdir(parents=True, exist_ok=True)
+
+
+def _filled_series(series: pd.Series) -> pd.Series:
+    return series.notna() & (series.astype(str).str.strip() != "") & (series.astype(str) != "nan")
+
+
+def load_reference_annotations(
+    path: str | Path,
+    *,
+    annotator_id: str | None = None,
+    annotation_round: int | None = None,
+    require_single_rater: bool = True,
+) -> pd.DataFrame:
+    """Load annotation rows, optionally filtering to one rater/round.
+
+    If multiple annotator/round pairs remain and ``require_single_rater`` is
+    true, raise instead of silently pooling or overwriting duplicates.
+    """
+    df = pd.read_csv(path)
+    if df.empty:
+        return df
+    if annotator_id is not None:
+        df = df[df["annotator_id"].astype(str) == str(annotator_id)].copy()
+    if annotation_round is not None:
+        df = df[
+            pd.to_numeric(df["annotation_round"], errors="coerce") == int(annotation_round)
+        ].copy()
+
+    rater_keys = (
+        df[["annotator_id", "annotation_round"]]
+        .astype(str)
+        .drop_duplicates()
+        .values.tolist()
+    )
+    if require_single_rater and len(rater_keys) > 1:
+        raise ValueError(
+            "Multiple annotator/round pairs in reference file "
+            f"{path}: {rater_keys}. Pass an explicit annotator/round or use the "
+            "consensus file for algorithm-reference comparisons."
+        )
+
+    # Reject duplicate references for the same session/event or session/frame.
+    events = df[_filled_series(df["event_name"]) & ~_filled_series(df["point_name"])]
+    dup_e = events.duplicated(subset=["session_id", "event_name"], keep=False)
+    if dup_e.any():
+        raise ValueError(
+            "Duplicate event references for the same session/event; "
+            "refusing to pool raters silently."
+        )
+    points = df[_filled_series(df["point_name"])]
+    if not points.empty:
+        pts = points.copy()
+        pts["reference_frame"] = pd.to_numeric(pts["reference_frame"], errors="coerce")
+        dup_p = pts.duplicated(subset=["session_id", "reference_frame"], keep=False)
+        if dup_p.any():
+            raise ValueError(
+                "Duplicate point references for the same session/frame; "
+                "refusing to pool raters silently."
+            )
+    return df
 
 
 def _norm(text) -> str:

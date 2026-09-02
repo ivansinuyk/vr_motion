@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import argparse
 import math
+from pathlib import Path
 
 import matplotlib
 
@@ -39,23 +40,37 @@ from batch_article_evaluation import (
 )
 
 
-def load_manual_points():
-    path = common.REFERENCE_ANNOTATIONS_CSV
+def load_manual_points(
+    annotations_csv=None,
+    annotator_id=None,
+    annotation_round=None,
+):
+    path = Path(annotations_csv) if annotations_csv else common.REFERENCE_ANNOTATIONS_CSV
     if not path.exists():
         return pd.DataFrame()
-    df = pd.read_csv(path)
+    df = common.load_reference_annotations(
+        path,
+        annotator_id=annotator_id,
+        annotation_round=annotation_round,
+        require_single_rater=True,
+    )
     pts = df[df["point_name"].astype(str).str.len() > 0].copy()
     for col in ("x_px", "y_px", "reference_time_s", "reference_frame"):
         pts[col] = pd.to_numeric(pts[col], errors="coerce")
     return pts.dropna(subset=["x_px", "y_px"])
 
 
-def load_manual_events():
+def load_manual_events(annotations_csv=None, annotator_id=None, annotation_round=None):
     """Return {session_id: {event_name: reference_time_s}} from the reference."""
-    path = common.REFERENCE_ANNOTATIONS_CSV
+    path = Path(annotations_csv) if annotations_csv else common.REFERENCE_ANNOTATIONS_CSV
     if not path.exists():
         return {}
-    df = pd.read_csv(path)
+    df = common.load_reference_annotations(
+        path,
+        annotator_id=annotator_id,
+        annotation_round=annotation_round,
+        require_single_rater=True,
+    )
     ev = df[df["event_name"].astype(str).str.len() > 0].copy()
     ev = ev[ev["point_name"].isna() | (ev["point_name"].astype(str).str.len() == 0)]
     ev["reference_time_s"] = pd.to_numeric(ev["reference_time_s"], errors="coerce")
@@ -94,8 +109,8 @@ def classify_phase(idx, ev_idx, impact_win=2):
     return "unknown"
 
 
-def compute_errors(points_df, dataset_root):
-    manual_events = load_manual_events()
+def compute_errors(points_df, dataset_root, annotations_csv=None, annotator_id=None, annotation_round=None):
+    manual_events = load_manual_events(annotations_csv, annotator_id, annotation_round)
     metadata = common.load_dataset_metadata().set_index("session_id")
     rows = []
     for sid, g in points_df.groupby("session_id"):
@@ -377,16 +392,36 @@ def make_figures(df):
 def main():
     parser = argparse.ArgumentParser(description="Validate processed trajectory vs manual points.")
     parser.add_argument("--dataset-root", default=common.DEFAULT_DATASET_ROOT)
+    parser.add_argument(
+        "--annotations-csv",
+        default=str(common.CONSENSUS_ANNOTATIONS_CSV),
+        help="Reference annotations CSV (consensus preferred for algorithm agreement).",
+    )
+    parser.add_argument("--annotator-id", default=None)
+    parser.add_argument("--annotation-round", type=int, default=None)
+    parser.add_argument("--out-dir", default=None)
     args = parser.parse_args()
 
-    common.ensure_output_dirs()
-    points = load_manual_points()
+    if args.out_dir:
+        common.configure_article2_outputs(args.out_dir)
+    else:
+        common.ensure_output_dirs()
+
+    points = load_manual_points(
+        args.annotations_csv, args.annotator_id, args.annotation_round
+    )
     if points.empty:
-        print("No manual stick-tip point annotations found in reference_annotations.csv.")
+        print(f"No manual stick-tip point annotations found in {args.annotations_csv}.")
         print("Run annotate_reference.py and click control points first.")
         return
 
-    df = compute_errors(points, args.dataset_root)
+    df = compute_errors(
+        points,
+        args.dataset_root,
+        args.annotations_csv,
+        args.annotator_id,
+        args.annotation_round,
+    )
     if df.empty:
         print("No comparable points produced (check time/frame alignment).")
         return
@@ -413,6 +448,7 @@ def main():
         f"Wrote trajectory-reference outputs ({len(df)} comparable points, "
         f"{df['session_id'].nunique()} sessions)"
     )
+    print(f"Reference source: {args.annotations_csv}")
 
 
 if __name__ == "__main__":

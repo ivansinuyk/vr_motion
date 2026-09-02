@@ -1,0 +1,9 @@
+Metric,"Median Δsym, %","Worst, %",Median ρ
+Smoothness index,6.2,15.1,0.73
+Path efficiency,5.9,24.8,0.63
+Maximum speed,18.7,60.8,0.56
+Maximum acceleration,26.0,93.5,0.46
+Maximum angular velocity,17.0,89.9,0.81
+Curvature RMS,39.6,157.4,0.93
+Swing tempo,74.4,160.7,0.34
+Backswing peak speed,53.6,179.8,0.44

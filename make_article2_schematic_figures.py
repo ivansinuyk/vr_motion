@@ -10,6 +10,8 @@ issues) and saved into second_article_outputs/figures/.
 
 from __future__ import annotations
 
+import argparse
+
 import matplotlib
 
 matplotlib.use("Agg")
@@ -196,7 +198,13 @@ def annotated_frame():
 
 
 def main():
-    common.ensure_output_dirs()
+    parser = argparse.ArgumentParser(description="Make article-2 schematic figures.")
+    parser.add_argument("--out-dir", default=None)
+    args = parser.parse_args()
+    if args.out_dir:
+        common.configure_article2_outputs(args.out_dir)
+    else:
+        common.ensure_output_dirs()
     study_design()
     annotated_frame()
     print("wrote fig_study_design.png and fig_annotated_frame.png")

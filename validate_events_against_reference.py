@@ -21,6 +21,7 @@ Run:
 from __future__ import annotations
 
 import argparse
+from pathlib import Path
 
 import matplotlib
 
@@ -48,11 +49,20 @@ def auto_event_times(result):
     }
 
 
-def load_manual_events():
-    path = common.REFERENCE_ANNOTATIONS_CSV
+def load_manual_events(
+    annotations_csv=None,
+    annotator_id=None,
+    annotation_round=None,
+):
+    path = Path(annotations_csv) if annotations_csv else common.REFERENCE_ANNOTATIONS_CSV
     if not path.exists():
         return pd.DataFrame()
-    df = pd.read_csv(path)
+    df = common.load_reference_annotations(
+        path,
+        annotator_id=annotator_id,
+        annotation_round=annotation_round,
+        require_single_rater=True,
+    )
     events = df[df["event_name"].astype(str).str.len() > 0].copy()
     events = events[events["point_name"].isna() | (events["point_name"].astype(str).str.len() == 0)]
     return events
@@ -70,9 +80,7 @@ def build_reference_table(manual_df, dataset_root, allow_synthetic):
             }
     if allow_synthetic:
         # Fill any session/event lacking a manual reference with synthetic keyframes.
-        import second_article_common as _c
-
-        subset_path = _c.OUTPUT_DIR / "reference_subset.csv"
+        subset_path = common.REFERENCE_SUBSET_CSV
         sids = (
             pd.read_csv(subset_path)["session_id"].astype(str).tolist()
             if subset_path.exists()
@@ -241,14 +249,28 @@ def make_figures(df):
 def main():
     parser = argparse.ArgumentParser(description="Validate auto events vs manual reference.")
     parser.add_argument("--dataset-root", default=common.DEFAULT_DATASET_ROOT)
+    parser.add_argument(
+        "--annotations-csv",
+        default=str(common.CONSENSUS_ANNOTATIONS_CSV),
+        help="Reference annotations CSV (consensus preferred for algorithm agreement).",
+    )
+    parser.add_argument("--annotator-id", default=None)
+    parser.add_argument("--annotation-round", type=int, default=None)
+    parser.add_argument("--out-dir", default=None, help="Write outputs here (default: second_article_outputs).")
     parser.add_argument("--allow-synthetic-fallback", action="store_true",
                         help="Fill missing manual events with unreliable synthetic keyframes.")
     args = parser.parse_args()
 
-    common.ensure_output_dirs()
-    manual = load_manual_events()
+    if args.out_dir:
+        common.configure_article2_outputs(args.out_dir)
+    else:
+        common.ensure_output_dirs()
+
+    manual = load_manual_events(
+        args.annotations_csv, args.annotator_id, args.annotation_round
+    )
     if manual.empty and not args.allow_synthetic_fallback:
-        print("No manual event annotations found in reference_annotations.csv.")
+        print(f"No manual event annotations found in {args.annotations_csv}.")
         print("Run annotate_reference.py first, or pass --allow-synthetic-fallback "
               "to produce a (clearly-labelled) synthetic baseline.")
         return
@@ -264,6 +286,7 @@ def main():
     summary.to_csv(common.OUTPUT_DIR / "event_validation_summary.csv", index=False)
     make_figures(df)
     print(f"Wrote event_validation_errors.csv ({len(df)} rows) and event_validation_summary.csv")
+    print(f"Reference source: {args.annotations_csv}")
     if (df["reference_source"] == "synthetic").any():
         print("NOTE: synthetic-keyframe references were used for some rows; do not report as ground truth.")
 

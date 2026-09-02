@@ -271,7 +271,7 @@ def make_figures(df: pd.DataFrame, summary: pd.DataFrame):
 def resolve_sessions(args):
     sessions = discover_sessions(args.dataset_root)
     if args.use_subset:
-        subset_path = common.OUTPUT_DIR / "reference_subset.csv"
+        subset_path = common.REFERENCE_SUBSET_CSV
         if subset_path.exists():
             ids = set(pd.read_csv(subset_path)["session_id"].astype(str))
             sessions = [s for s in sessions if s.name in ids]
@@ -285,9 +285,13 @@ def main():
     parser.add_argument("--dataset-root", default=common.DEFAULT_DATASET_ROOT)
     parser.add_argument("--limit", type=int, default=None)
     parser.add_argument("--use-subset", action="store_true")
+    parser.add_argument("--out-dir", default=None)
     args = parser.parse_args()
 
-    common.ensure_output_dirs()
+    if args.out_dir:
+        common.configure_article2_outputs(args.out_dir)
+    else:
+        common.ensure_output_dirs()
     sessions = resolve_sessions(args)
     if not sessions:
         raise RuntimeError(f"No sessions found under {args.dataset_root}")

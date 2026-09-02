@@ -1,6 +1,8 @@
 # Article 2 — Master Reviewer Findings
 
-**Manuscript:** `article_package/Стаття_Аспірант_Синюк_HAIT_article2_v1.docx`  
+> **Resolution (2026-09-02):** Addressed in v4 DOCX. Item-by-item status: `second_article_outputs/v3/mentor_review_resolution_checklist.md`. Current manuscript: `Стаття_Аспірант_Синюк_HAIT_article2_v4.docx`.
+
+**Manuscript reviewed:** `article_package/Стаття_Аспірант_Синюк_HAIT_article2_v1.docx` (historical)  
 **Cross-checked against:** `second_article_outputs/` CSVs  
 **Status:** findings only — no edits applied  
 **Canvas source (same workspace):** `.cursor` project canvases / `article2-master-review.canvas.tsx`

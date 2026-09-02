@@ -1,25 +1,35 @@
 # Article 2: post-annotation and publication runbook
 
-Use this file as the execution specification for the agent that continues the
-second article after additional human annotation.
+> **Completion status (2026-09-02):** Phases 0–11 are **done**. Current deliverable for mentor review: `article_package/Стаття_Аспірант_Синюк_HAIT_article2_v4.docx` (+ `second_article_outputs/v3/article2_v4_preview.pdf`). Master sync: `article_package/research_publication_status.md`. Phases 12–13 remain for HAIT OJS upload.
+
+Use this file as the **execution log** for the agent that continued the second article after human annotation. For day-to-day regeneration commands, prefer `second_article_outputs/README.md`.
 
 ## Current frozen baseline
 
 - Manuscript source:
   `article_package/second_article_manuscript.md`
-- Mentor-review DOCX:
+- **Current mentor-review DOCX:**
+  `article_package/Стаття_Аспірант_Синюк_HAIT_article2_v4.docx`
+- Fallback DOCX (pre-ethics):
+  `article_package/Стаття_Аспірант_Синюк_HAIT_article2_v3.docx`
+- Frozen pre–multi-rater DOCX:
   `article_package/Стаття_Аспірант_Синюк_HAIT_article2_v2.docx`
 - Verified preview:
-  `second_article_outputs/article2_v2_preview.pdf`
+  `second_article_outputs/v3/article2_v4_preview.pdf`
+- Canonical analysis:
+  `second_article_outputs/v3/`
 - Original annotations:
   `second_article_outputs/reference_annotations.csv`
+- Live rater files:
+  `reference_annotations_annotator2_round1.csv`, `reference_annotations_ivan_round2.csv`
+- Consensus:
+  `second_article_outputs/reference_annotations_consensus.csv`
 - Frozen 25-session subset:
   `second_article_outputs/reference_subset.csv`
 - Dataset default:
   `C:\Users\isinu\Downloads\Telegram Desktop\7a0c087a-b6c7-42ea-bc67-63453d4cac7f`
 
-Never overwrite the v2 manuscript, the original annotation CSV, or the frozen
-subset. Build the post-rater revision as v3.
+Never overwrite the v2 DOCX, the original Ivan R1 annotation CSV, or the frozen subset. Build post-rater revisions as v3+ (default builder output is now v4).
 
 ## Non-negotiable role definitions
 
@@ -478,9 +488,7 @@ An agent must not invent any item below. The corresponding author must provide:
 8. missing author photographs if the HAIT template requires them;
 9. final approval from all authors.
 
-Replace the provisional ethics warning in v2 with a factual, institutionally
-approved statement before submission. If lawful scientific use cannot be
-verified, stop: the article must not be submitted.
+Replace the provisional ethics warning in v2 with a factual statement before submission. **Done in v4** (anonymized public demonstration footage; no ethics-committee approval required — author-supplied). If lawful scientific use cannot be verified, stop: the article must not be submitted.
 
 ## Phase 13: HAIT submission package
 
@@ -505,13 +513,9 @@ The APC is due only after acceptance.
 ## Copy-paste instruction for the future agent
 
 ```text
-Follow article_package/article2_post_annotation_publication_runbook.md as the
-authoritative execution plan. First inspect the repository and raw annotation
-files, then implement every missing CLI/tool listed in the runbook. Preserve
-all v2 and raw files, keep human annotation blinded from automatic output,
-reject duplicate references, resolve the production RTS defect, regenerate all
-analysis into second_article_outputs/v3, build article2_v3.docx, and verify the
-Word/PDF layout. Do not fabricate ethics, consent, participant, acquisition, or
-club metadata. Stop and report any failed acceptance check or missing mandatory
-owner-supplied information.
+Article 2 pipeline is complete. For regeneration see second_article_outputs/README.md
+and article_package/research_publication_status.md. To rebuild DOCX: build_second_article_docx.py
+(default v4). Do not overwrite article2_v2.docx or reference_annotations.csv (Ivan R1).
+Do not fabricate participant metadata or club lengths. Remaining before HAIT OJS: co-author
+photos (Oleksii, Karthik), Article 1 [32] DOI when published, HAIT forms.
 ```

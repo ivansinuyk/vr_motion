@@ -1,6 +1,8 @@
 # Second article master-review findings
 
-Reviewed manuscript: `Стаття_Аспірант_Синюк_HAIT_article2_v1.docx`
+> **Resolution (2026-09-02):** 58/72 findings resolved in v4; see `second_article_outputs/v3/mentor_review_resolution_checklist.md` and `research_publication_status.md`.
+
+Reviewed manuscript: `Стаття_Аспірант_Синюк_HAIT_article2_v1.docx` (historical)
 
 The review cross-checked the DOCX, manuscript source, generated tables, CSV outputs, and analysis scripts. No manuscript files were changed during the review.
 

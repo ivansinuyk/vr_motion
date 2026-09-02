@@ -338,21 +338,27 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Audit article-2 event time bases.")
     parser.add_argument(
         "--subset",
-        default=str(common.OUTPUT_DIR / "reference_subset.csv"),
+        default=str(common.REFERENCE_SUBSET_CSV),
     )
     parser.add_argument(
         "--annotations",
-        default=str(common.REFERENCE_ANNOTATIONS_CSV),
+        default=str(common.CONSENSUS_ANNOTATIONS_CSV),
     )
     parser.add_argument(
         "--dataset-summary",
         default=str(common.DATASET_SUMMARY_CSV),
     )
+    parser.add_argument("--out-dir", default=None)
     args = parser.parse_args()
 
-    common.ensure_output_dirs()
+    if args.out_dir:
+        common.configure_article2_outputs(args.out_dir)
+    else:
+        common.ensure_output_dirs()
     subset = pd.read_csv(args.subset)
     annotations = pd.read_csv(args.annotations)
+    # Timebase audit may include multi-rater rows; keep all for provenance checks
+    # but prefer consensus file by default.
     dataset_summary = pd.read_csv(args.dataset_summary)
 
     sessions = audit_sessions(subset, annotations)
@@ -369,6 +375,7 @@ def main() -> None:
         common.OUTPUT_DIR / "timebase_audit_summary.md",
     )
     print(f"Audited {len(sessions)} sessions and {len(events)} event comparisons.")
+    print(f"Annotations: {args.annotations}")
 
 
 if __name__ == "__main__":

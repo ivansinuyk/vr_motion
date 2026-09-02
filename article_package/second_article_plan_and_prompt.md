@@ -1,6 +1,14 @@
 # Second Article Plan and Agent Prompt
 
-## Working Title
+> **Status (2026-09-02):** Article 2 is **implemented and in mentor re-review**. Current manuscript: `article_package/second_article_manuscript.md` → `Стаття_Аспірант_Синюк_HAIT_article2_v4.docx`. Master sync: `article_package/research_publication_status.md`. This document remains the **design archive + HAIT formatter recipe**; do not treat “Step 0” or “future agent” sections as pending work unless rebuilding from scratch.
+
+## Working Title (implemented — revised for mentor review)
+
+**Published title in v4:**
+
+Reference-Based 2D Agreement and Perturbation Sensitivity of a Markerless Video-Based Golf-Club Motion-Analysis Workflow under Heterogeneous Recording Conditions
+
+**Original planning title (superseded):**
 
 Robustness and Validation of a Markerless Video-Based Golf Swing Motion-Analysis Workflow Under Heterogeneous Recording Conditions
 
@@ -12,9 +20,7 @@ Alternative titles:
 
 ## Purpose of This Document
 
-This Markdown file is a future-use planning brief and prompt for writing a second research article related to the existing VR/golf motion-analysis project.
-
-It does not implement code and does not generate the article now. It records:
+This Markdown file was the planning brief and agent prompt for Article 2. **Implementation is complete** (see `research_publication_status.md`). It still records:
 
 - what was already done in the first article;
 - what the second article should focus on;
@@ -41,10 +47,12 @@ This section was added after inspecting the actual project state, not just the a
 - `dtw_results.json` is frequently empty (`cost: null`, empty `path`), so DTW alignment to the template is not a usable reference signal as-is.
 - There is NO trajectory-level (pixel point) reference anywhere. Nothing in the dataset gives a per-frame stick-tip ground-truth coordinate. Objective 3 (geometric trajectory error) cannot be done without new manual point annotation.
 
-### Practical consequence
+### Practical consequence (historical → resolved 2026-09-02)
 
-- Manual annotation remains the single most important missing piece, exactly as this brief states - but the framing should change. The P1-P10 JPGs and synthetic keyframes are excellent annotation *aids* (frames are pre-extracted at the key positions), and the unreliability of the synthetic keyframes is itself a publishable motivation: "the system's automatic keyframes are unreliable, so we built a manual reference and quantified the error".
-- `second_article_outputs/` does not exist yet, and none of the six planned article-2 scripts exist yet. Author photos are not loose files in `article_package/`; they live embedded inside the v4 DOCX and must be reused from there.
+- Manual annotation completed: Ivan Syniuk R1, Daria Plokhotniuk R1, Ivan R2 (10 sessions); consensus via mean rule; `audit_rater_independence.py` exit 0.
+- `second_article_outputs/v3/` is the canonical analysis bundle; duplicate root-level outputs were removed in cleanup.
+- Author photos for Ivan and Maksym are embedded in the HAIT template; Oleksii and Karthik cells remain empty (same as Article 1 v5).
+- Full script list and artifact paths: `research_publication_status.md`.
 
 ## Background: What the First Article Covered
 
@@ -333,40 +341,27 @@ Metrics:
 - processing success rate;
 - missing-data bridging performance.
 
-### 6. `compute_reliability_statistics.py`
+### 6. `compute_reliability_statistics.py` — **removed / not used**
 
-Purpose:
+Purpose (original plan):
 
 - compute stronger reliability statistics if repeated trials or repeated annotations are available.
 
-Outputs:
+**Status:** Script removed 2026-09-02. Athlete IDs and repeated trials are unavailable; Article 2 does not claim ICC, SEM, or MDC. Inter-/intra-rater agreement is reported via `compute_annotation_agreement.py` instead.
 
-- `second_article_outputs/reliability_statistics.csv`
-- `second_article_outputs/figures/fig_bland_altman_selected_metrics.png`
-- `second_article_outputs/figures/fig_icc_metric_ranking.png`
+## Main Figures for the Second Article (implemented in v4)
 
-Metrics:
+Embedded figures (7):
 
-- coefficient of variation;
-- repeatability coefficient;
-- intraclass correlation coefficient if grouping exists;
-- Bland-Altman limits of agreement;
-- standard error of measurement;
-- minimal detectable change.
+1. Study design and evidence scope — `v3/figures/fig_study_design.png`
+2. Schematic annotation frame — `fig_annotated_frame.png`
+3. Human annotation agreement — `fig_annotation_agreement.png`
+4. Automatic vs consensus event frames — `fig_event_frame_identity.png`
+5. Clubhead agreement by phase — `fig_trajectory_error_by_phase.png`
+6. Sensitivity heatmap — `fig_sensitivity_metric_heatmap.png`
+7. Ablation RMS jerk — `fig_ablation_jerk_reduction.png`
 
-## Main Figures for the Second Article
-
-Suggested figures:
-
-1. Study design and validation workflow.
-2. Example manually annotated frame with reference stick-tip points.
-3. Event timing error by swing event.
-4. Trajectory point error distribution.
-5. Sensitivity heatmap by metric and perturbation.
-6. Ablation comparison of processing variants.
-7. Bland-Altman or agreement plot for selected robust metrics.
-
-Fig. 2 should use a permitted/anonymized video frame, not a real user frame without consent.
+Fig. 2 uses a schematic frame (no participant photograph).
 
 ## Main Tables for the Second Article
 
@@ -656,6 +651,8 @@ The manuscript must contain (titles may be adapted but the function must remain 
 
 ## Ready-to-Send Prompt for a Future Agent
 
+> **Superseded for initial build** — Article 2 is complete. Use this block only when **rebuilding from scratch**, scoping **Article 3**, or refreshing HAIT formatting. Start from `research_publication_status.md`.
+
 ```text
 You are an expert academic researcher, scientific editor, and Python data-analysis assistant specializing in computer vision, sport biomechanics, markerless motion analysis, and Scopus-level manuscript preparation.
 
@@ -778,4 +775,4 @@ Please begin by analyzing the current project and producing a detailed implement
 
 ## Final Note
 
-The second article becomes strongest if manual reference annotations are added. Without them, the article can still be a robustness/sensitivity study, but it should not claim full external accuracy validation.
+Article 2 was implemented with manual multi-rater reference annotations. The central finding is **bounded 2D agreement relative to a sparse visual reference whose own uncertainty was measured first** — not full external biomechanical validation. For current status, DOCX versions, and Article 3 directions, see `research_publication_status.md`.

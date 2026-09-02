@@ -23,11 +23,12 @@ Main commands:
 - `python parameter_sweep.py --folder "<session>"`
 
 Research/manuscript context:
-- `article_package/` contains HAIT manuscript drafts, final DOCX candidates, evaluation CSVs, figures, and `second_article_plan_and_prompt.md`.
-- Current first-article DOCX: `article_package/Стаття_Аспірант_Синюк_HAIT_aligned_final_v5.docx` (v4 plus Group A reviewer editorial fixes: refs 23-30 cited in-text, RC/CV and smoothness-index definitions added, body-segment metrics noted as out of scope, AI-use disclosure moved to the declarations block, split Conclusions sentence merged, numeral/en-dash normalization). The format-accepted prior version `..._aligned_final_v4.docx` and the earlier figures-only baseline `..._wordsafe_v3.docx` are kept for reference.
-- `article_package/fix_hait_formatting.py` is the reusable HAIT formatter (metadata, references, Ukrainian block, author-info table, headers/footers). When formatting a new manuscript, clone it and swap the constants instead of writing a new script. The full verified HAIT recipe is documented in `second_article_plan_and_prompt.md`.
-- The final first-article DOCX should preserve embedded figures, editable Word equations, Times New Roman 11 pt, and HAIT margins.
-- Fig. 2 is illustrative only; replacing it does not require recalculating CSVs/graphs unless the quantitative dataset changes.
+- **Master sync:** `article_package/research_publication_status.md` — Article 1/2 status, artifacts, future directions.
+- `article_package/` contains HAIT manuscript drafts, final DOCX candidates, evaluation CSVs, figures, and planning docs.
+- **Article 1** (method pipeline): `article_package/Стаття_Аспірант_Синюк_HAIT_aligned_final_v5.docx` (format-accepted; refs 23-30 cited in-text, RC/CV and smoothness-index definitions, AI-use in declarations). Prior versions `..._aligned_final_v4.docx` and `..._wordsafe_v3.docx` kept for reference.
+- **Article 2** (reference agreement + perturbation sensitivity): text source `article_package/second_article_manuscript.md`; **current DOCX** `article_package/Стаття_Аспірант_Синюк_HAIT_article2_v4.docx`; analysis bundle `second_article_outputs/v3/`; frozen fallbacks `article2_v2.docx`, `article2_v3.docx`. Builder: `build_second_article_docx.py`. Runbook (completed): `article2_post_annotation_publication_runbook.md`.
+- `article_package/fix_hait_formatting.py` is the reusable HAIT formatter for Article 1 style; Article 2 uses `build_second_article_docx.py` (clone of v5 template). HAIT recipe: `second_article_plan_and_prompt.md` § HAIT Formatting Requirements.
+- Fig. 2 (Article 1) is illustrative only; Article 2 Fig. 2 is a schematic annotation frame.
 
 Scientific caution:
 - Raw markerless landmarks are not ground truth.

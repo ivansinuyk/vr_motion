@@ -9,38 +9,57 @@ format-accepted first-article DOCX and edits it *in place*:
   copyright line unchanged;
 * the two-column body between INTRODUCTION and the section break before
   REFERENCES is fully replaced with the article-2 text, tables, and figures;
+* every table is placed in a one-column island created with continuous section
+  breaks, so wide tables span the full text width instead of being crushed into
+  an 8.2 cm column (master-review item M29);
 * the Ukrainian metadata block (title, abstract, keywords, citation) is
   rewritten;
+* the mandatory AI-use disclosure is placed with the Acknowledgements, ahead of
+  REFERENCES, per current HAIT policy;
 * the REFERENCES list and, critically, the ABOUT THE AUTHORS photo table are
   left untouched so the embedded author photos, headers/footers, odd/even
   header-footer settings, margins, and column/section structure are preserved.
 
+``article_package/second_article_manuscript.md`` is the single content source;
+all numbers come from the analysis directory passed with ``--analysis-dir``.
+
 Run:
-    python build_second_article_docx.py
+    python build_second_article_docx.py \
+        --manuscript article_package/second_article_manuscript.md \
+        --analysis-dir second_article_outputs/v3 \
+        --output "article_package/Стаття_Аспірант_Синюк_HAIT_article2_v4.docx"
+
+Publication status: ``article_package/research_publication_status.md``
 """
 
 from __future__ import annotations
 
+import argparse
+import copy
 import glob
 import re
+import shutil
+from dataclasses import dataclass
 from pathlib import Path
 
 import pandas as pd
 from docx import Document
 from docx.enum.table import WD_TABLE_ALIGNMENT
-from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_BREAK
+from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml.ns import qn
 from docx.shared import Cm, Pt
 
-TEMPLATE = glob.glob("article_package/*final_v5.docx")[0]
-OUTPUT = "article_package/Стаття_Аспірант_Синюк_HAIT_article2_v2.docx"
-MANUSCRIPT_PATH = Path("article_package/second_article_manuscript.md")
-FIG_DIR = Path("second_article_outputs/figures")
-TABLES_DIR = Path("second_article_outputs/article_tables")
+DEFAULT_TEMPLATE_GLOB = "article_package/*final_v5.docx"
+DEFAULT_MANUSCRIPT = "article_package/second_article_manuscript.md"
+DEFAULT_ANALYSIS_DIR = "second_article_outputs/v3"
+DEFAULT_AGREEMENT_DIR = "second_article_outputs/annotation_agreement"
+DEFAULT_OUTPUT = "article_package/Стаття_Аспірант_Синюк_HAIT_article2_v4.docx"
 
 FONT = "Times New Roman"
 COL_WIDTH_CM = 8.2
+FULL_WIDTH_CM = 16.9
 INDENT_CM = 0.75
+TABLE_FONT_PT = 9
 
 
 # --------------------------------------------------------------------------- #
@@ -87,6 +106,23 @@ def find_par(doc, predicate):
     raise LookupError("paragraph not found")
 
 
+def find_par_after(doc, start_par, predicate):
+    """Like ``find_par`` but skips everything up to and including ``start_par``.
+
+    The body now carries its own AI-use disclosure next to the Acknowledgements,
+    so a document-order search would match that copy instead of the template's
+    declarations block.
+    """
+    seen = False
+    for p in doc.paragraphs:
+        if p._p is start_par._p:
+            seen = True
+            continue
+        if seen and predicate(p.text):
+            return p
+    raise LookupError("paragraph not found after anchor")
+
+
 def para_after_heading(doc, heading_text):
     paras = doc.paragraphs
     for i, p in enumerate(paras):
@@ -95,6 +131,10 @@ def para_after_heading(doc, heading_text):
                 if q.text.strip():
                     return q
     raise LookupError(f"no paragraph after heading {heading_text!r}")
+
+
+def remove_paragraph(par):
+    par._element.getparent().remove(par._element)
 
 
 # --------------------------------------------------------------------------- #
@@ -178,13 +218,68 @@ def add_figure(anchor, image_path, caption_num, caption_title, source="compiled 
     _set_run_font(rs, 8, bold=True, italic=True)
 
 
-def add_table(doc, anchor, table_num, title, df, source="compiled by the authors"):
-    if table_num in {1, 2, 4}:
-        column_break = anchor.insert_paragraph_before()
-        column_break.paragraph_format.first_line_indent = Cm(0)
-        column_break.add_run().add_break(WD_BREAK.COLUMN)
+# --------------------------------------------------------------------------- #
+# full-width table islands
+# --------------------------------------------------------------------------- #
+def _column_break_paragraph(anchor, body_sect, columns):
+    """Insert a near-invisible paragraph whose section properties end a region.
 
-    # Title above the table.
+    Word stores section properties on the *last* paragraph of a section, so a
+    paragraph carrying ``cols/num=2`` closes the two-column run of body text and
+    a paragraph carrying ``cols/num=1`` closes the full-width island that
+    follows it.
+    """
+    p = anchor.insert_paragraph_before()
+    pf = p.paragraph_format
+    pf.first_line_indent = Cm(0)
+    pf.space_before = Pt(0)
+    pf.space_after = Pt(0)
+    pf.line_spacing = 1.0
+
+    pPr = p._p.get_or_add_pPr()
+    rpr = pPr.makeelement(qn("w:rPr"), {})
+    size = pPr.makeelement(qn("w:sz"), {qn("w:val"): "2"})
+    rpr.append(size)
+    pPr.append(rpr)
+
+    sect = copy.deepcopy(body_sect)
+    type_el = sect.find(qn("w:type"))
+    if type_el is None:
+        type_el = sect.makeelement(qn("w:type"), {})
+        sect.insert(0, type_el)
+    type_el.set(qn("w:val"), "continuous")
+
+    cols = sect.find(qn("w:cols"))
+    if cols is None:
+        cols = sect.makeelement(qn("w:cols"), {})
+        sect.append(cols)
+    cols.set(qn("w:num"), str(columns))
+
+    pPr.append(sect)
+    return p
+
+
+def _repeat_header_row(table):
+    """Mark the first row as a header so it repeats when the table breaks."""
+    tr_pr = table.rows[0]._tr.get_or_add_trPr()
+    tbl_header = tr_pr.makeelement(qn("w:tblHeader"), {})
+    tr_pr.append(tbl_header)
+
+
+def _style_cell(cell, text, bold=False):
+    cell.text = ""
+    paragraph = cell.paragraphs[0]
+    paragraph.paragraph_format.space_before = Pt(0)
+    paragraph.paragraph_format.space_after = Pt(0)
+    paragraph.paragraph_format.line_spacing = 1.0
+    run = paragraph.add_run(text)
+    _set_run_font(run, TABLE_FONT_PT, bold=bold)
+
+
+def add_table(doc, anchor, body_sect, table_num, title, df, widths, source="compiled by the authors"):
+    """Render one table full-width between continuous section breaks."""
+    _column_break_paragraph(anchor, body_sect, 2)
+
     tp = anchor.insert_paragraph_before()
     tp.alignment = WD_ALIGN_PARAGRAPH.CENTER
     tp.paragraph_format.first_line_indent = Cm(0)
@@ -196,49 +291,31 @@ def add_table(doc, anchor, table_num, title, df, source="compiled by the authors
     _set_run_font(r2, 11, bold=True)
 
     n_cols = len(df.columns)
+    if widths is None or len(widths) != n_cols:
+        widths = [FULL_WIDTH_CM / n_cols] * n_cols
+    col_widths = [Cm(value) for value in widths]
+
     table = doc.add_table(rows=1, cols=n_cols)
     table.style = "Table Grid"
     table.alignment = WD_TABLE_ALIGNMENT.CENTER
     table.autofit = False
     table.allow_autofit = False
 
-    custom_widths = {
-        1: [2.8, 2.7, 2.7],
-        2: [1.6, 3.6, 3.0],
-        3: [2.0, 0.8, 2.2, 3.2],
-        4: [1.5, 1.5, 3.3, 1.9],
-        5: [2.5, 2.0, 1.7, 2.0],
-        6: [2.2, 1.5, 1.9, 2.6],
-    }
-    if table_num in custom_widths and len(custom_widths[table_num]) == n_cols:
-        widths = [Cm(value) for value in custom_widths[table_num]]
-    elif n_cols == 1:
-        widths = [Cm(COL_WIDTH_CM)]
-    else:
-        label_w = min(2.8, COL_WIDTH_CM / n_cols + 1.0)
-        rest = (COL_WIDTH_CM - label_w) / (n_cols - 1)
-        widths = [Cm(label_w)] + [Cm(rest)] * (n_cols - 1)
-
     hdr = table.rows[0].cells
     for j, col in enumerate(df.columns):
-        hdr[j].text = ""
-        run = hdr[j].paragraphs[0].add_run(str(col))
-        _set_run_font(run, 11, bold=True)
+        _style_cell(hdr[j], str(col), bold=True)
+    _repeat_header_row(table)
     for _, row in df.iterrows():
         cells = table.add_row().cells
         for j, col in enumerate(df.columns):
-            cells[j].text = ""
-            run = cells[j].paragraphs[0].add_run(str(row[col]))
-            _set_run_font(run, 11)
+            _style_cell(cells[j], str(row[col]))
     for row in table.rows:
         for j, cell in enumerate(row.cells):
-            cell.width = widths[j]
+            cell.width = col_widths[j]
     for j, column in enumerate(table.columns):
-        column.width = widths[j]
-    # Move the appended table to just before the anchor.
+        column.width = col_widths[j]
     anchor._p.addprevious(table._tbl)
 
-    # Source line below the table.
     src = anchor.insert_paragraph_before()
     src.alignment = WD_ALIGN_PARAGRAPH.CENTER
     src.paragraph_format.first_line_indent = Cm(0)
@@ -246,150 +323,12 @@ def add_table(doc, anchor, table_num, title, df, source="compiled by the authors
     rs = src.add_run(f"Source: {source}")
     _set_run_font(rs, 8, bold=True, italic=True)
 
+    _column_break_paragraph(anchor, body_sect, 1)
+
 
 # --------------------------------------------------------------------------- #
-# content
+# manuscript parsing
 # --------------------------------------------------------------------------- #
-TITLE = ("Validation, robustness, and reliability of a markerless "
-         "video-based golf-stick motion analysis")
-
-ABSTRACT = (
-    "Markerless video analysis is an attractive alternative to marker-based motion capture for "
-    "golf-swing assessment because it works with ordinary cameras, yet the measurements it produces "
-    "are rarely validated against an independent reference, and their robustness to real recording "
-    "conditions is seldom quantified. The aim of this study is to evaluate the accuracy, robustness, "
-    "and reliability of a previously described markerless video-based golf-stick motion-analysis "
-    "workflow under heterogeneous recording conditions and controlled input perturbations. A reference "
-    "subset of twenty-five sessions was drawn from seventy-one processed recordings by stratified "
-    "sampling across camera viewpoint, frame rate, resolution, and quality grade. For each session a "
-    "single annotator manually marked four swing events and about ten stick-tip control points, giving "
-    "one hundred event annotations and two hundred sixty control points. Automatic event times were "
-    "compared with the manual reference; geometric trajectory error was computed between processed and "
-    "manually annotated stick-tip positions, with swing phase assigned from the manual events; metric "
-    "sensitivity was measured under frame thinning, landmark dropout, coordinate jitter, scale "
-    "perturbation, and combined degradation; and six processing variants were compared in a controlled "
-    "ablation with a shared derivative definition. Event detection showed a large early bias of "
-    "approximately one and seven tenths to two seconds and a median absolute error near one second, "
-    "which is reported as an honest negative finding rather than as evidence of accurate timing. In "
-    "contrast, stick-tip trajectory error was small over the reliably tracked backswing and downswing, "
-    "with an overall median near fifteen pixels or about four centimetres, degrading only in the "
-    "follow-through where tracking is lost. The smoothness index and path efficiency were the most "
-    "stable metrics under perturbation and across sessions, whereas peak derivative and phase-duration "
-    "metrics were highly unstable. The novelty of the work is a transparent, reference-based robustness "
-    "characterization that separates trustworthy geometric measurements from unreliable event timing "
-    "and exploratory derivative metrics. The practical value is a set of explicit recommendations that "
-    "indicate which markerless golf-swing indicators can be used for cross-session comparison in "
-    "sport-biomechanics research and virtual-reality training and which require controlled acquisition "
-    "or external validation."
-)
-
-KEYWORDS = "markerless validation; golf swing; event detection; trajectory error; sensitivity analysis; metric robustness"
-
-CITATION_EN = ('Syniuk I. M., Maksymov M. V., Maksymov O. M., Iyer K. "Validation, robustness, and '
-               'reliability of a markerless video-based golf-stick motion analysis". Herald of Advanced '
-               "Information Technology. - [Year]. - Vol. [..]. - No. [..]. - Pp. [..-..]. "
-               "DOI: [assigned by editorial team]")
-
-UA_TITLE = ("Валідація, робастність і надійність безмаркерного відеоаналізу руху ключки для гольфу "
-            "за неоднорідних умов зйомки")
-
-UA_ABSTRACT = (
-    "Безмаркерний відеоаналіз є привабливою альтернативою маркерним системам захоплення руху для "
-    "оцінювання гольф-свінгу, оскільки працює зі звичайними камерами, проте отримані вимірювання рідко "
-    "перевіряють щодо незалежного еталона, а їхню стійкість до реальних умов зйомки майже не оцінюють "
-    "кількісно. Метою дослідження є оцінювання точності, робастності та надійності раніше описаного "
-    "безмаркерного відеопайплайну аналізу руху ключки для гольфу за неоднорідних умов зйомки та "
-    "контрольованих збурень вхідних даних. Еталонну підмножину з двадцяти п’яти сесій було відібрано "
-    "із сімдесяти однієї опрацьованої сесії стратифікованою вибіркою за ракурсом камери, частотою "
-    "кадрів, роздільною здатністю та класом якості. Для кожної сесії один анотатор вручну позначив "
-    "чотири події свінгу та близько десяти контрольних точок кінця ключки, що дало сто анотацій подій "
-    "і двісті шістдесят контрольних точок. Автоматичні часи подій порівнювали з ручним еталоном; "
-    "геометричну похибку траєкторії обчислювали між опрацьованими та вручну позначеними положеннями "
-    "кінця ключки, а фазу свінгу визначали за ручними подіями; чутливість метрик вимірювали за "
-    "проріджування кадрів, випадання орієнтирів, координатного шуму, збурення масштабу та комбінованої "
-    "деградації; шість варіантів обробки порівнювали в контрольованій абляції зі спільним визначенням "
-    "похідних. Виявлення подій показало велике раннє зміщення приблизно від однієї цілої семи десятих "
-    "до двох секунд і медіанну абсолютну похибку близько однієї секунди, що подано як чесний негативний "
-    "результат, а не як свідчення точного хронометражу. Натомість похибка траєкторії кінця ключки була "
-    "малою на надійно відстежуваних фазах бек- та даун-свінгу з медіаною близько п’ятнадцяти пікселів, "
-    "або близько чотирьох сантиметрів, і зростала лише на фазі супроводу, де відстеження втрачається. "
-    "Індекс плавності та ефективність траєкторії були найстабільнішими метриками за збурень і між "
-    "сесіями, тоді як пікові похідні та метрики тривалості фаз були вкрай нестабільними. Новизна роботи "
-    "полягає у прозорому оцінюванні робастності на основі еталона, що відокремлює достовірні геометричні "
-    "вимірювання від ненадійного хронометражу подій та дослідницьких похідних метрик. Практична цінність "
-    "— набір явних рекомендацій, які показники безмаркерного гольф-свінгу можна використовувати для "
-    "міжсесійного порівняння у спортивній біомеханіці та тренуваннях віртуальної реальності, а які "
-    "потребують контрольованої зйомки або зовнішньої валідації."
-)
-
-UA_KEYWORDS = ("валідація безмаркерних систем; гольф-свінг; виявлення подій; похибка траєкторії; "
-               "аналіз чутливості; робастність метрик")
-
-CITATION_UA = ('Синюк І. М., Максимов М. В., Максимов О. М., Айєр К. «Валідація, робастність і надійність '
-               'безмаркерного відеоаналізу руху ключки для гольфу». Herald of Advanced Information '
-               "Technology. - [Рік]. - Т. [..]. - № [..]. - С. [..-..]. DOI: [призначається редакцією]")
-
-INTRO = [
-    "Quantitative assessment of the golf swing supports coaching, rehabilitation, talent development, and virtual-reality training analytics. Marker-based optical motion capture provides high spatial accuracy, but it requires calibrated laboratory space, synchronized cameras, reflective markers, and trained operators, which restricts repeated field use and reduces ecological validity [1], [2]. Markerless computer-vision methods lower this barrier by estimating body and object landmarks from ordinary video, so a single smartphone recording can in principle yield stick speed, swing tempo, phase timing, and movement-quality indicators [3], [4], [5].",
-    "The convenience of markerless capture, however, does not by itself guarantee measurement validity. Monocular landmark trajectories are affected by frame-to-frame noise, missed detections, motion blur, occlusion, and apparent scale change caused by camera geometry, and differentiation amplifies these errors when speed, acceleration, jerk, and angular velocity are computed [6], [7]. A companion methodological study introduced a reproducible processing workflow that combines running median pre-filtering, a confidence-aware constant-velocity Kalman filter, Rauch-Tung-Striebel backward smoothing, trajectory despiking, bounded polynomial smoothing, and dynamic scale calibration, and it reported session-level repeatability together with diagnostic validation, sensitivity, and ablation blocks. Those diagnostics were deliberately framed as preliminary because they were not compared against an independent reference.",
-    "The open problem is therefore not the design of the pipeline but its evaluation. Before markerless swing metrics can be used for cross-session comparison, three questions must be answered with evidence: how accurately the workflow locates swing events in time, how closely the processed stick-tip trajectory matches manually annotated positions, and how stable the exported metrics remain when realistic degradations affect the input. The present study addresses these questions directly by constructing a manually annotated reference subset and using it to quantify accuracy, robustness, and reliability. A distinctive feature of the study is that it reports a clear negative finding for event timing alongside encouraging geometric-trajectory results, so that the workflow is characterized honestly rather than promoted uncritically. The overall study design is shown in Fig. 1.",
-]
-
-LITREVIEW = [
-    "Kinematic analysis has long been central to sports biomechanics, describing movement timing, segment coordination, implement speed, and movement smoothness [1], [2], [8]. In golf, relevant indicators include stick speed, swing tempo, kinematic sequencing, and impact timing [9], [10], [11], [23]. These indicators are traditionally obtained with marker-based systems or, for portable field instrumentation, with wearable inertial sensors [24]; both are more cumbersome than ordinary video for routine use.",
-    "Deep-learning pose estimators such as OpenPose, BlazePose, and MediaPipe made markerless analysis practical with ordinary cameras and near-real-time inference [3], [4], [5], [25], [29]. Their accuracy nonetheless depends on camera view, lighting, motion blur, occlusion, and model confidence, and validation studies consistently warn that two-dimensional monocular projections cannot fully replace calibrated three-dimensional systems [12], [13], [26], [27], [28]. This literature establishes that a markerless workflow must be validated against an explicit reference before its measurements are trusted, and that reported error should be interpreted with respect to the specific capture conditions.",
-    "Signal conditioning is a second recurring theme. Median filtering suppresses impulse outliers [14]; Kalman filtering combines a dynamic model with noisy measurements to produce a recursive state estimate [15], [16]; and, when offline analysis is acceptable, Rauch-Tung-Striebel smoothing refines earlier estimates using later observations [17]. Polynomial smoothing of the Savitzky-Golay type reduces derivative noise while preserving local shape [18], and jerk-based smoothness metrics are widely used but must be interpreted cautiously because differentiation amplifies noise [19]. For measurement reliability, coefficient of variation, repeatability coefficient, intraclass correlation, and Bland-Altman limits of agreement are the standard tools [20], [21], [22].",
-    "Despite this background, most markerless golf-swing reports emphasize plausible trajectories and pipeline design rather than reference-based error. Three gaps remain. First, event-timing accuracy is rarely quantified against manually verified frames. Second, geometric trajectory error is rarely measured against per-frame stick-tip annotations, because no such reference normally exists. Third, metric robustness under realistic degradations, and the resulting distinction between trustworthy and exploratory metrics, is rarely reported. The problem addressed in this article is to close these gaps for the described workflow by building a manual reference subset and using it to quantify event accuracy, trajectory accuracy, sensitivity, and reliability, and then to classify each exported metric by its practical usability.",
-]
-
-AIM = "The aim of the research is to evaluate the accuracy, robustness, and reliability of a markerless video-based golf-stick motion-analysis workflow under heterogeneous recording conditions and controlled input perturbations."
-
-OBJECTIVES = [
-    "To construct a manually annotated reference subset of swing events and stick-tip control points from a heterogeneous corpus of processed sessions.",
-    "To quantify event-detection accuracy for top of backswing, downswing transition, and impact against the manual reference.",
-    "To estimate geometric stick-tip trajectory error between the processed trajectory and manually annotated points, resolved by swing phase.",
-    "To evaluate the sensitivity of exported metrics to frame thinning, landmark dropout, coordinate jitter, scale perturbation, and combined degradation.",
-    "To compare processing variants through a controlled ablation with a shared derivative definition and time base.",
-    "To identify which kinematic and movement-quality metrics are robust enough for cross-session comparison and to formulate practical recommendations for their use.",
-]
-
-METHODS = {
-    "Dataset and reference subset": "The corpus comprises seventy-one markerless golf-swing sessions processed with the scientific filtering profile of the workflow described in the companion methodological study. The recordings are heterogeneous: the frame-rate range is 23.98 to 60.00 frames per second, resolution ranges from below 720 p to 1080 p and above, and camera viewpoint is predominantly down-the-line with a minority of face-on recordings. To obtain a manageable yet representative reference set, twenty-five sessions were selected by stratified sampling across viewpoint, frame-rate bucket, resolution bucket, capture-speed class, and a coarse quality grade that counts the number of adverse tags (keyframe issue, motion blur, occlusion). The stratification balances easy and difficult recordings so that reported error is not dominated by a single favourable condition. Dataset and subset characteristics are summarized in Table 1.",
-    "Manual annotation protocol": "Because the corpus contains no per-frame stick-tip ground truth and its automatic keyframes are unreliable, a manual reference was created. A frame-by-frame annotation tool built on an image viewer was used to step through each selected video and record, in original video pixel coordinates, four swing events (address, top of backswing, downswing transition, and impact) and a set of stick-tip control points distributed along the visible swing arc. Clicks were captured at full resolution even when the display was downscaled, so the reference is independent of display size. A single annotator produced one annotation round, yielding one hundred event annotations and two hundred sixty stick-tip control points across the twenty-five sessions, with eight to fourteen points per session. The protocol is summarized in Table 2. A schematic annotated frame is shown in Fig. 2; a drawn schematic is used instead of a real user frame to avoid consent and privacy concerns.",
-    "Automatic processing": "Each session was processed with the unmodified scientific profile of the workflow. The processing chain converts normalized landmarks to pixel coordinates, applies a running median filter, a confidence-aware constant-velocity Kalman filter with innovation gating, Rauch-Tung-Striebel smoothing, trajectory despiking, and bounded polynomial smoothing, and derives a per-frame pixel-to-metre scale from the detected stick length. Automatic swing events and the final smoothed stick-tip trajectory were exported for comparison with the manual reference. The pipeline itself is not re-derived here; it is the object under evaluation.",
-    "Event validation": "For each session, automatic event times were compared with the manual reference times for top of backswing, downswing transition, and impact. Signed and absolute errors were computed in both milliseconds and frames. Reported statistics are the mean signed error, the median absolute error, the ninety-fifth percentile absolute error, and Bland-Altman bias and ninety-five-percent limits of agreement [22]. The signed error is defined as automatic minus reference, so a negative value indicates that the automatic event fires early.",
-    "Trajectory validation": "For each manually annotated control point, the processed stick-tip position at the matching frame was retrieved and the Euclidean error was computed in pixels, in image-diagonal-normalized units, and in metres using the per-frame scale. Each point was assigned to a swing phase (backswing, transition, downswing, impact region, or follow-through) using the manual event times rather than the automatic ones, because the automatic events are biased early and would misclassify most points. Errors were summarized per phase and overall by median, upper quartile, and ninety-fifth percentile.",
-    "Sensitivity analysis": "Robustness was assessed by perturbing the input of each of the seventy-one sessions and re-processing it with the same profile. Twelve scenarios were applied: frame thinning by factors of two and three; landmark dropout at five, ten, and twenty percent; zero-mean Gaussian coordinate jitter at normalized standard deviations of 0.004 and 0.008 applied to the stick landmarks; scale perturbation of plus or minus five and ten percent; and a combined degradation that stacks frame thinning, ten-percent dropout, and jitter. For each scenario and metric the signed change, percentage change, and median absolute percentage change relative to the unperturbed baseline were computed, together with a rank-stability coefficient. Metrics were classified as robust, usable, or exploratory when the median absolute change was below ten percent, below twenty-five percent, or above twenty-five percent respectively.",
-    "Ablation study": "Six processing variants were reconstructed from the same raw landmarks: raw, median only, Kalman only, Kalman plus RTS, Kalman plus RTS plus despiking, and the full pipeline. To avoid the inconsistency of the earlier diagnostic ablation, all derivative metrics were computed from each variant's final trajectory with one shared derivative function and one time base. For the standalone Kalman-plus-RTS variant the textbook smoother with the process-noise term in the predicted covariance was used, because the production smoother omits that term and relies on a downstream deviation clamp that is absent when the variant is isolated; the production code was left unchanged. Reported per-variant statistics include median deviation from the raw trajectory, median root-mean-square jerk, and the median smoothness index, path efficiency, and maximum speed.",
-    "Reliability and statistical analysis": "Cross-session dispersion of eleven exported metrics was summarized by the coefficient of variation and the repeatability coefficient. Because athlete and trial grouping are not encoded in the anonymized export, these statistics describe between-session heterogeneity of the corpus and are not interpreted as within-athlete test-retest repeatability; an intraclass-correlation path is provided in the analysis code for future data with explicit grouping [20], [21]. Agreement between the full pipeline and the Kalman-plus-RTS-plus-despiking variant was additionally summarized with Bland-Altman bias and limits of agreement [22]. A metric robustness ranking combined the sensitivity classification with the cross-session coefficient of variation to assign each metric to a recommended-use category.",
-}
-
-RESULTS = {
-    "Reference subset": ["All seventy-one sessions processed successfully, and the twenty-five-session reference subset preserved the heterogeneity of the full corpus across viewpoint, frame rate, resolution, and quality grade (Table 1). The manual annotation produced one hundred event annotations and two hundred sixty stick-tip control points (Table 2), which is, to our knowledge, the first per-frame stick-tip reference for this workflow."],
-    "Event-timing accuracy": ["Event detection was inaccurate. The median absolute timing error was 817 ms for impact, 920 ms for top of backswing, and 1000 ms for downswing transition, and the ninety-fifth percentile absolute error exceeded 4.7 s for every event (Table 3; Fig. 3). The errors were strongly biased: the mean signed error was -1730 ms for impact, -1914 ms for top of backswing, and -1987 ms for downswing transition, so the automatic events fire roughly one and seven tenths to two seconds early. The Bland-Altman plots confirm a large negative bias with wide limits of agreement that broaden as swing duration increases (Fig. 4). These values are far larger than a normal golf swing and are reported as a negative finding: the current automatic event detector requires recalibration before any timing-based claim can be made."],
-    "Trajectory accuracy": ["Geometric trajectory error was, in contrast, small over the reliably tracked phases. The overall median stick-tip error was 14.9 px, corresponding to about 3.8 cm, with an upper quartile of 27.2 px (Table 4). Error was lowest in the backswing (median 12.7 px, about 3.1 cm) and downswing (median 14.5 px, about 4.2 cm) and increased in the impact region and follow-through (medians near 19 px). The ninety-fifth-percentile values are inflated by a small number of sessions in which tracking is lost after impact, which is visible as large whiskers for the downswing and follow-through phases (Fig. 5). The combination of accurate stick-tip positions with grossly inaccurate event timing indicates that the geometric trajectory is trustworthy where the tip is tracked, while the temporal segmentation is not."],
-    "Sensitivity": ["Metric sensitivity varied by orders of magnitude across metrics (Table 5; Fig. 6). Scale perturbation had a small and predictable effect on most metrics, with a median absolute change of one percent or less for the smoothness index and path efficiency. The smoothness index was the most stable metric under every perturbation family, with a median absolute change of about 14 percent under frame thinning, 12 percent under landmark dropout, 12 percent under jitter, and 14 percent under combined degradation. Path efficiency was the next most stable. In sharp contrast, peak derivative metrics and phase-duration metrics were highly unstable: maximum acceleration, maximum angular velocity, curvature RMS, swing tempo, and backswing peak speed frequently changed by more than 60 percent, and backswing peak speed changed by several hundred percent under jitter and combined degradation. Rank stability followed the same pattern, remaining moderate for the smoothness index and path efficiency and collapsing for the derivative metrics [30]."],
-    "Ablation": ["The controlled ablation showed the expected monotone reduction of jerk along the filtering chain when metrics are computed consistently (Table 6; Fig. 7). Median root-mean-square jerk fell from about 17300 for raw landmarks to about 4600 for the Kalman-plus-RTS variant, while the smoothness index rose correspondingly. The full pipeline deviated from the raw trajectory by a median of only about 2.3 cm, much less than the intermediate variants, because its bounded polynomial smoothing and scale handling keep the final trajectory close to the observed path while still suppressing jerk relative to raw. These results confirm that each stage contributes to trajectory regularization and that the differences between variants are consistent once a shared derivative definition is used."],
-    "Metric robustness ranking": ["Combining the sensitivity classification with cross-session dispersion produced a clear ranking (Table 7; Fig. 8). The smoothness index was robust in all twelve perturbation scenarios and had the lowest cross-session coefficient of variation (about 22 percent); it is recommended as robust under heterogeneous capture. Path efficiency was robust or usable in most scenarios (coefficient of variation about 36 percent) and is recommended as usable with controlled acquisition. All remaining metrics, including maximum speed, maximum acceleration, maximum angular velocity, curvature RMS, swing tempo, and the peak-speed and phase-duration metrics, were exploratory, with median changes above 25 percent and cross-session coefficients of variation above 100 percent; they should not be used for cross-session comparison without controlled acquisition and external validation."],
-}
-
-DISCUSSION = [
-    "The results give a differentiated picture of what the markerless workflow can and cannot measure. The strongest positive finding is geometric: where the stick tip is tracked, the processed trajectory lies within about four centimetres of manually annotated positions during the backswing and downswing, the phases that matter most for swing-path assessment. This is a meaningful accuracy level for coaching feedback and virtual-reality training, and it is supported by an explicit per-frame reference rather than by visual plausibility alone.",
-    "The strongest negative finding is temporal. Automatic event detection is biased early by roughly one and seven tenths to two seconds, with median absolute errors near one second and very wide limits of agreement. This is far too large for any timing-dependent metric, and it explains why phase-duration and tempo metrics were among the least reliable. The early bias also motivates the decision to classify trajectory points by manual rather than automatic events: had the automatic events been used, most points would have been misassigned to the follow-through and the trajectory result would have been distorted. Reporting this bias openly is more useful than suppressing it, because it identifies event detection as the single component most in need of recalibration.",
-    "The robustness analysis reconciles these findings with the earlier repeatability observations. Global movement-quality metrics, the smoothness index and path efficiency, are stable both under controlled perturbation and across heterogeneous sessions, whereas peak derivative metrics are dominated by noise that differentiation amplifies [6], [7], [19]. Scale perturbation behaves predictably, confirming that the pixel-to-metre calibration propagates linearly and does not introduce nonlinear artefacts, while frame thinning, dropout, and jitter degrade derivative metrics most, consistent with the hypothesis that temporal and high-frequency information is the first to be lost under degradation. These patterns agree with the broader markerless-validation literature, which reports that two-dimensional monocular estimates are usable for global and low-order measures but unreliable for fine temporal and high-order kinematics without controlled capture [12], [13], [26], [27], [28].",
-    "These findings translate into concrete guidance for virtual-reality training and coaching applications. A virtual-reality feedback system built on this workflow should present the smoothness index and path efficiency as primary swing-quality indicators, because they remain comparable across sessions recorded on different devices and under different conditions, and it should display stick-tip trajectory overlays for the backswing and downswing, where geometric error is small enough to be visually faithful. Conversely, timing-dependent cues such as tempo, phase durations, and event markers should be withheld or clearly flagged as approximate until event detection is recalibrated, and peak speed and acceleration values should be shown only as within-session trends rather than as absolute measurements to be compared between athletes or sessions. This selective presentation lets a training system exploit the parts of the workflow that are trustworthy while avoiding feedback that the present evidence cannot support.",
-    "Several limitations bound these conclusions. The reference was produced by a single annotator in one round, so inter-annotator reliability is not yet available; the analysis code already supports a second round and intraclass-correlation computation for future work. The corpus lacks athlete and trial grouping, so reliability is expressed as cross-session dispersion rather than test-retest repeatability. The system is monocular and two-dimensional, so out-of-plane motion and perspective distortion remain unresolved, and the metric error in metres depends on the stick-length scale assumption. Finally, the trajectory reference covers control points rather than every frame, and follow-through tracking is unreliable. None of these limitations affects the two central, reference-based conclusions: the trajectory is accurate where tracked, and the event timing is not.",
-]
-
-CONCLUSIONS = [
-    "This study evaluated a markerless video-based golf-stick motion-analysis workflow against a purpose-built manual reference and under controlled perturbations, converting the earlier diagnostic checks into a reference-based validation. A stratified twenty-five-session subset was annotated with one hundred swing events and two hundred sixty stick-tip control points and used to quantify event-timing accuracy, geometric trajectory accuracy, metric sensitivity, ablation consistency, and cross-session reliability.",
-    "The evaluation shows that the workflow measures stick-tip geometry accurately where the tip is tracked, with an overall median trajectory error of about four centimetres and best performance in the backswing and downswing, but that its automatic event detection is biased early by roughly one and seven tenths to two seconds and is not yet usable for timing. Among exported metrics, the smoothness index is robust under heterogeneous capture and path efficiency is usable with controlled acquisition, whereas peak derivative and phase-duration metrics remain exploratory.",
-    "The scientific novelty is a transparent, reference-based characterization that separates trustworthy geometric measurements from unreliable event timing and exploratory derivative metrics, including an explicitly reported negative finding for event detection. The practical value is a concrete set of recommendations that tell practitioners which markerless golf-swing indicators to trust for cross-session comparison in sport biomechanics and virtual-reality training. Future work will recalibrate event detection, add a second annotator for inter-annotator reliability, and extend the reference with athlete and trial grouping to enable intraclass-correlation and test-retest analysis.",
-]
-
-ACK = "The authors thank the research supervisor and collaborators who supported the review of the manuscript and the development and evaluation of the motion-analysis workflow."
-
-
 def _paragraphs(lines):
     paragraphs = []
     current = []
@@ -414,7 +353,7 @@ def _paragraphs(lines):
 
 def _parse_manuscript(path):
     """Parse the canonical Markdown source into metadata and body sections."""
-    lines = path.read_text(encoding="utf-8").splitlines()
+    lines = Path(path).read_text(encoding="utf-8").splitlines()
     metadata = {}
     current = None
     buffer = []
@@ -467,100 +406,231 @@ def _parse_manuscript(path):
     return metadata, body
 
 
-_META, _BODY = _parse_manuscript(MANUSCRIPT_PATH)
+@dataclass
+class Content:
+    title: str
+    abstract: str
+    keywords: str
+    ua_title: str
+    ua_abstract: str
+    ua_keywords: str
+    citation_en: str
+    citation_ua: str
+    intro: list
+    litreview: list
+    aim: str
+    objectives: list
+    methods: dict
+    results: dict
+    discussion: list
+    conclusions: list
+    acknowledgments: str
 
 
-def _meta(name):
-    values = _META.get(name, [])
-    if not values:
-        raise KeyError(f"Missing manuscript metadata section: {name}")
-    return " ".join(values)
+def load_content(manuscript_path) -> Content:
+    meta, body = _parse_manuscript(manuscript_path)
 
+    def one(name):
+        values = meta.get(name, [])
+        if not values:
+            raise KeyError(f"Missing manuscript metadata section: {name}")
+        return " ".join(values)
 
-# Override the legacy inline draft above. The Markdown file is the single
-# content source used for every subsequent build.
-TITLE = _meta("TITLE")
-ABSTRACT = _meta("ABSTRACT")
-KEYWORDS = _meta("KEYWORDS")
-UA_TITLE = _meta("Ukrainian title")
-UA_ABSTRACT = _meta("Ukrainian abstract")
-UA_KEYWORDS = _meta("Ukrainian keywords")
-CITATION_EN = re.sub(r"^For citation:\s*", "", _meta("For citation (English)"))
-CITATION_UA = re.sub(r"^Для цитування:\s*", "", _meta("For citation (Ukrainian)"))
-
-INTRO = _BODY["INTRODUCTION"]["lead"]
-LITREVIEW = _BODY["LITERATURE REVIEW AND PROBLEM STATEMENT"]["lead"]
-_aim_paras = _BODY["RESEARCH AIM AND OBJECTIVES"]["lead"]
-AIM = _aim_paras[0]
-OBJECTIVES = [
-    re.sub(r"^\d+\.\s*", "", paragraph)
-    for paragraph in _aim_paras
-    if re.match(r"^\d+\.\s+", paragraph)
-]
-METHODS = _BODY["MATERIALS AND METHODS"]["subsections"]
-RESULTS = _BODY["RESEARCH RESULTS"]["subsections"]
-DISCUSSION = _BODY["DISCUSSION OF RESULTS"]["lead"]
-CONCLUSIONS = _BODY["CONCLUSIONS"]["lead"]
-ACK = " ".join(_BODY["ACKNOWLEDGMENTS"]["lead"])
-
-FIGURES = {
-    3: (FIG_DIR / "fig_event_frame_identity.png", "Automatic versus manually annotated event frames"),
-    4: (FIG_DIR / "fig_trajectory_error_by_phase.png", "Session-level clubhead agreement by swing phase"),
-    5: (FIG_DIR / "fig_sensitivity_metric_heatmap.png", "Metric response by perturbation family"),
-    6: (FIG_DIR / "fig_ablation_jerk_reduction.png", "Root-mean-square jerk across production stages"),
-}
-
-TABLE_TITLES = {
-    1: "Dataset and reference-subset characteristics",
-    2: "Operational definitions of manually annotated events",
-    3: "Event-frame agreement with the manual reference",
-    4: "Clubhead localization agreement by swing phase",
-    5: "Sensitivity and rank preservation of exported metrics",
-    6: "Nested ablation of actual production stages",
-    7: "Study-specific operational response tiers",
-}
-
-
-def load_table(n):
-    files = {
-        1: "table1_dataset_subset.csv",
-        2: "table2_annotation_protocol.csv",
-        3: "table3_event_timing.csv",
-        4: "table4_trajectory_error.csv",
-        5: "table5_sensitivity.csv",
-        6: "table6_ablation.csv",
-        7: "table7_robustness_ranking.csv",
-    }
-    return pd.read_csv(TABLES_DIR / files[n])
+    aim_paras = body["RESEARCH AIM AND OBJECTIVES"]["lead"]
+    return Content(
+        title=one("TITLE"),
+        abstract=one("ABSTRACT"),
+        keywords=one("KEYWORDS"),
+        ua_title=one("Ukrainian title"),
+        ua_abstract=one("Ukrainian abstract"),
+        ua_keywords=one("Ukrainian keywords"),
+        citation_en=re.sub(r"^For citation:\s*", "", one("For citation (English)")),
+        citation_ua=re.sub(r"^Для цитування:\s*", "", one("For citation (Ukrainian)")),
+        intro=body["INTRODUCTION"]["lead"],
+        litreview=body["LITERATURE REVIEW AND PROBLEM STATEMENT"]["lead"],
+        aim=aim_paras[0],
+        objectives=[
+            re.sub(r"^\d+\.\s*", "", paragraph)
+            for paragraph in aim_paras
+            if re.match(r"^\d+\.\s+", paragraph)
+        ],
+        methods=body["MATERIALS AND METHODS"]["subsections"],
+        results=body["RESEARCH RESULTS"]["subsections"],
+        discussion=body["DISCUSSION OF RESULTS"]["lead"],
+        conclusions=body["CONCLUSIONS"]["lead"],
+        acknowledgments=" ".join(body["ACKNOWLEDGMENTS"]["lead"]),
+    )
 
 
 # --------------------------------------------------------------------------- #
-def rewrite_first_page(doc):
+# tables and figures
+# --------------------------------------------------------------------------- #
+TABLE_TITLES = {
+    1: "Dataset and reference-subset characteristics",
+    2: "Operational definitions of manually annotated events",
+    3: "Annotation agreement between and within annotators",
+    4: "Event-frame agreement with the consensus reference",
+    5: "Clubhead localization agreement with the consensus by swing phase",
+    6: "Perturbation response and rank preservation of exported metrics",
+    7: "Nested ablation of actual production stages",
+}
+
+TABLE_WIDTHS = {
+    1: [4.5, 6.2, 6.2],
+    2: [3.6, 7.7, 5.6],
+    3: [4.4, 0.9, 2.7, 2.2, 1.7, 1.9, 3.1],
+    4: [4.4, 1.0, 4.2, 7.3],
+    5: [3.6, 2.4, 5.4, 5.5],
+    6: [3.6, 2.4, 1.8, 1.8, 2.8, 4.5],
+    7: [5.4, 3.2, 3.6, 4.7],
+}
+
+FIGURE_TITLES = {
+    1: ("fig_study_design.png", "Study design and evidence scope"),
+    2: ("fig_annotated_frame.png", "Operational event and selected-frame clubhead annotations"),
+    3: ("fig_annotation_agreement.png", "Human annotation agreement between and within annotators"),
+    4: ("fig_event_frame_identity.png", "Automatic versus manual consensus event frames"),
+    5: ("fig_trajectory_error_by_phase.png", "Session-level clubhead agreement by swing phase"),
+    6: ("fig_sensitivity_metric_heatmap.png", "Metric response by perturbation family"),
+    7: ("fig_ablation_jerk_reduction.png", "Root-mean-square jerk across production stages"),
+}
+
+GENERATED_TABLE_FILES = {
+    1: "table1_dataset_subset.csv",
+    2: "table2_annotation_protocol.csv",
+    4: "table3_event_timing.csv",
+    5: "table4_trajectory_error.csv",
+    7: "table6_ablation.csv",
+}
+
+
+HEADER_REWRITES = {"RMS jerk, m/s^3": "RMS jerk, m/s\u00b3"}
+
+
+def load_generated_table(tables_dir: Path, table_num: int) -> pd.DataFrame:
+    df = pd.read_csv(tables_dir / GENERATED_TABLE_FILES[table_num])
+    return df.rename(columns=HEADER_REWRITES)
+
+
+def _fmt(value, digits=1):
+    if pd.isna(value):
+        return "-"
+    return f"{float(value):.{digits}f}".rstrip("0").rstrip(".") if digits else f"{float(value):.0f}"
+
+
+def build_agreement_table(agreement_dir: Path) -> pd.DataFrame:
+    """Table 3: human-human agreement, straight from the agreement summary."""
+    summary = pd.read_csv(agreement_dir / "annotation_agreement_summary.csv")
+
+    event_labels = {
+        "address": "Address",
+        "top_backswing": "Top of backswing",
+        "downswing_transition": "Downswing transition",
+        "impact": "Impact",
+        "ALL": "All events",
+    }
+    plan = [
+        ("inter_rater", "Between annotators", ["address", "top_backswing", "downswing_transition", "impact", "ALL"]),
+        ("intra_rater_ivan", "Within annotator, repeat round", ["ALL"]),
+    ]
+
+    rows = []
+    for comparison, comparison_label, groups in plan:
+        block = summary[summary["comparison"] == comparison]
+        for group in groups:
+            row = block[(block["domain"] == "event") & (block["group"] == group)]
+            if row.empty:
+                continue
+            r = row.iloc[0]
+            median = r["session_median_abs_frame"] if pd.notna(r["session_median_abs_frame"]) else r["median_abs_frame"]
+            rows.append(
+                {
+                    "Comparison and measure": f"{comparison_label}: {event_labels[group].lower()}, frames",
+                    "n": int(r["n_pairs"]),
+                    "Median (95% CI)": (
+                        f"{_fmt(median)} "
+                        f"({_fmt(r['session_median_abs_frame_ci_low'])}-"
+                        f"{_fmt(r['session_median_abs_frame_ci_high'])})"
+                    ),
+                    "P95 / max": f"{_fmt(r['p95_abs_frame'])} / {_fmt(r['max_abs_frame'])}",
+                    "Exact, %": _fmt(100 * r["exact_frame_frac"], 0),
+                    "Within 2, %": _fmt(100 * r["within_2_frame_frac"], 0),
+                    "Bias (95% LoA)": (
+                        f"{_fmt(r['bias_frame'], 2)} "
+                        f"({_fmt(r['loa_low_frame'])} to {_fmt(r['loa_high_frame'])})"
+                    ),
+                }
+            )
+
+    for comparison, comparison_label, _ in plan:
+        row = summary[(summary["comparison"] == comparison) & (summary["domain"] == "point")]
+        if row.empty:
+            continue
+        r = row.iloc[0]
+        median = r["session_median_pixel"] if pd.notna(r["session_median_pixel"]) else r["median_pixel"]
+        rows.append(
+            {
+                "Comparison and measure": f"{comparison_label}: clubhead clicks, px",
+                "n": int(r["n_pairs"]),
+                "Median (95% CI)": (
+                    f"{_fmt(median)} "
+                    f"({_fmt(r['session_median_pixel_ci_low'])}-{_fmt(r['session_median_pixel_ci_high'])})"
+                ),
+                "P95 / max": f"{_fmt(r['p95_pixel'])} / {_fmt(r['max_pixel'])}",
+                "Exact, %": "-",
+                "Within 2, %": "-",
+                "Bias (95% LoA)": f"{int(r['n_over_50px'])} pairs > 50 px",
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def build_sensitivity_table(tables_dir: Path) -> pd.DataFrame:
+    """Table 6: the two generated sensitivity tables joined on metric name."""
+    sens = pd.read_csv(tables_dir / "table5_sensitivity.csv")
+    rank = pd.read_csv(tables_dir / "table7_robustness_ranking.csv")
+    merged = rank.merge(sens, on="Metric", how="left", validate="one_to_one")
+    return pd.DataFrame(
+        {
+            "Metric": merged["Metric"],
+            "Median change, %": merged["Median Δsym, %"],
+            "Worst, %": merged["Worst, %"],
+            "Median ρ": merged["Median ρ"],
+            "Low/mod./high": merged["Scenarios low/moderate/high"],
+            "Interpretation": merged["Interpretation"],
+        }
+    )
+
+
+# --------------------------------------------------------------------------- #
+# document assembly
+# --------------------------------------------------------------------------- #
+def rewrite_first_page(doc, content: Content):
     title_p = find_par(doc, lambda t: t.startswith("Markerless video-based golf-stick motion analysis using Kalman"))
-    set_text(title_p, TITLE)
+    set_text(title_p, content.title)
 
     abstract_p = para_after_heading(doc, "ABSTRACT")
-    set_text(abstract_p, ABSTRACT)
+    set_text(abstract_p, content.abstract)
 
     kw_p = find_par(doc, lambda t: t.startswith("Keywords:"))
-    rebuild_runs(kw_p, [("Keywords: ", True, False, 9), (KEYWORDS, False, False, 9)])
+    rebuild_runs(kw_p, [("Keywords: ", True, False, 9), (content.keywords, False, False, 9)])
 
     cite_p = find_par(doc, lambda t: t.startswith("For citation:"))
-    rebuild_runs(cite_p, [("For citation: ", True, True, 8), (CITATION_EN, True, False, 8)])
+    rebuild_runs(cite_p, [("For citation: ", True, True, 8), (content.citation_en, True, False, 8)])
 
 
-def rewrite_ukrainian(doc):
+def rewrite_ukrainian(doc, content: Content):
     ua_title = find_par(doc, lambda t: t.startswith("Безмаркерний відеоаналіз руху ключки"))
-    set_text(ua_title, UA_TITLE)
+    set_text(ua_title, content.ua_title)
 
     ua_abs = para_after_heading(doc, "АНОТАЦІЯ")
-    set_text(ua_abs, UA_ABSTRACT)
+    set_text(ua_abs, content.ua_abstract)
 
     ua_kw = find_par(doc, lambda t: t.startswith("Ключові слова:"))
-    rebuild_runs(ua_kw, [("Ключові слова: ", True, False, 9), (UA_KEYWORDS, False, False, 9)])
+    rebuild_runs(ua_kw, [("Ключові слова: ", True, False, 9), (content.ua_keywords, False, False, 9)])
 
     ua_cite = find_par(doc, lambda t: t.startswith("Для цитування:"))
-    rebuild_runs(ua_cite, [("Для цитування: ", True, True, 8), (CITATION_UA, True, False, 8)])
+    rebuild_runs(ua_cite, [("Для цитування: ", True, True, 8), (content.citation_ua, True, False, 8)])
 
 
 def find_body_anchor(doc):
@@ -594,75 +664,104 @@ def remove_old_body(doc, intro_p, anchor_p):
         body.remove(el)
 
 
-def build_body(doc, anchor):
+AI_DISCLOSURE = (
+    "Use of generative AI tools: AI-assisted language revision, consistency checking, and code "
+    "review were performed with GPT-5.6 Sol, Claude Opus 5, and Cursor Grok 4.6 in Cursor during "
+    "manuscript preparation in 2026. The authors reviewed the resulting text and remain responsible "
+    "for the data, methods, interpretation, references, and final manuscript."
+)
+
+
+def build_body(doc, anchor, body_sect, content: Content, fig_dir: Path, tables_dir: Path, agreement_dir: Path):
+    def figure(number, source="compiled by the authors"):
+        name, caption = FIGURE_TITLES[number]
+        add_figure(anchor, fig_dir / name, number, caption, source=source)
+
+    def table(number, df, source="compiled by the authors"):
+        add_table(
+            doc, anchor, body_sect, number, TABLE_TITLES[number], df, TABLE_WIDTHS.get(number), source=source
+        )
+
     add_section_heading(anchor, "INTRODUCTION")
-    for t in INTRO:
-        add_body(anchor, t)
-    add_figure(
-        anchor,
-        FIG_DIR / "fig_study_design.png",
-        1,
-        "Study design and evidence scope",
-    )
+    for text in content.intro:
+        add_body(anchor, text)
+    figure(1)
 
     add_section_heading(anchor, "LITERATURE REVIEW AND PROBLEM STATEMENT")
-    for t in LITREVIEW:
-        add_body(anchor, t)
+    for text in content.litreview:
+        add_body(anchor, text)
 
     add_section_heading(anchor, "RESEARCH AIM AND OBJECTIVES")
-    add_body(anchor, AIM)
+    add_body(anchor, content.aim)
     add_body(anchor, "The research objectives are:")
-    add_numbered(anchor, OBJECTIVES)
+    add_numbered(anchor, content.objectives)
 
     add_section_heading(anchor, "MATERIALS AND METHODS")
-    for sub, texts in METHODS.items():
+    for sub, texts in content.methods.items():
         add_subheading(anchor, sub)
         for text in texts:
             add_body(anchor, text)
-        if sub == "Dataset, sampling, and available metadata":
-            add_table(doc, anchor, 1, TABLE_TITLES[1], load_table(1))
-        elif sub == "Manual annotation protocol":
-            add_table(doc, anchor, 2, TABLE_TITLES[2], load_table(2))
-            add_figure(anchor, FIG_DIR / "fig_annotated_frame.png", 2,
-                       "Operational event and selected-frame clubhead annotations")
+        if sub.startswith("Dataset, sampling"):
+            table(1, load_generated_table(tables_dir, 1))
+        elif sub.startswith("Manual annotation protocol"):
+            table(2, load_generated_table(tables_dir, 2))
+            figure(2)
 
     add_section_heading(anchor, "RESEARCH RESULTS")
-    for sub, paras in RESULTS.items():
+    for sub, paras in content.results.items():
         add_subheading(anchor, sub)
-        for t in paras:
-            add_body(anchor, t)
-        if sub == "Time-base audit and event disagreement":
-            add_table(doc, anchor, 3, TABLE_TITLES[3], load_table(3))
-            add_figure(anchor, *((FIGURES[3][0], 3, FIGURES[3][1])))
-        elif sub == "Clubhead localization agreement and failure tail":
-            add_table(
-                doc,
-                anchor,
-                4,
-                TABLE_TITLES[4],
-                load_table(4),
+        for text in paras:
+            add_body(anchor, text)
+        if sub.startswith("Annotation agreement"):
+            table(
+                3,
+                build_agreement_table(agreement_dir),
+                source=(
+                    "compiled by the authors; human annotation only; "
+                    "confidence intervals resample sessions"
+                ),
+            )
+            figure(3)
+        elif sub.startswith("Time-base audit"):
+            table(4, load_generated_table(tables_dir, 4))
+            figure(4)
+        elif sub.startswith("Clubhead localization agreement"):
+            table(
+                5,
+                load_generated_table(tables_dir, 5),
                 source="compiled by the authors; n_s - sessions; n_p - points",
             )
-            add_figure(anchor, *((FIGURES[4][0], 4, FIGURES[4][1])))
-        elif sub == "Perturbation sensitivity":
-            add_table(doc, anchor, 5, TABLE_TITLES[5], load_table(5))
-            add_figure(anchor, *((FIGURES[5][0], 5, FIGURES[5][1])))
-        elif sub == "Production-stage ablation":
-            add_table(doc, anchor, 6, TABLE_TITLES[6], load_table(6))
-            add_figure(anchor, *((FIGURES[6][0], 6, FIGURES[6][1])))
+            figure(5)
+        elif sub.startswith("Perturbation sensitivity"):
+            table(
+                6,
+                build_sensitivity_table(tables_dir),
+                source=(
+                    "compiled by the authors; response bands are study-specific descriptive "
+                    "labels, not measurement tolerances"
+                ),
+            )
+            figure(6)
+        elif sub.startswith("Production-stage ablation"):
+            table(7, load_generated_table(tables_dir, 7))
+            figure(7)
 
     add_section_heading(anchor, "DISCUSSION OF RESULTS")
-    for t in DISCUSSION:
-        add_body(anchor, t)
+    for text in content.discussion:
+        add_body(anchor, text)
 
     add_section_heading(anchor, "CONCLUSIONS")
-    for t in CONCLUSIONS:
-        add_body(anchor, t)
+    for text in content.conclusions:
+        add_body(anchor, text)
 
     add_section_heading(anchor, "ACKNOWLEDGMENTS")
-    add_body(anchor, ACK)
+    add_body(anchor, content.acknowledgments)
+    add_body(anchor, AI_DISCLOSURE)
 
 
+# --------------------------------------------------------------------------- #
+# references and declarations
+# --------------------------------------------------------------------------- #
 def _reference_specs(number, authors, title, journal, details):
     return [
         (f"{number}. {authors} “{title}”. ", False, False, 11),
@@ -735,12 +834,13 @@ def rewrite_references_and_declarations(doc):
         rebuild_runs(paragraph, specs)
         _format_reference_paragraph(paragraph)
 
-    ai_statement = find_par(
-        doc, lambda text: text.startswith("Use of generative AI tools:")
-    )
+    # HAIT policy places the AI-use disclosure with the Acknowledgements, ahead
+    # of REFERENCES; build_body writes it there, so drop the template copy that
+    # sits in the post-references declarations block.
+    template_ai = find_par_after(doc, conflict, lambda text: text.startswith("Use of generative AI tools:"))
 
     def insert_statement(text):
-        paragraph = ai_statement.insert_paragraph_before()
+        paragraph = template_ai.insert_paragraph_before()
         paragraph.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
         paragraph.paragraph_format.first_line_indent = Cm(0)
         paragraph.paragraph_format.line_spacing = 1.0
@@ -748,26 +848,17 @@ def rewrite_references_and_declarations(doc):
         _set_run_font(run, 11)
 
     insert_statement(
-        "Ethics and consent: The available project export did not contain source, "
-        "consent, waiver, or ethics-committee documentation. No participant image is "
-        "reproduced. The manuscript must not be submitted until the authors and "
-        "institution verify lawful scientific use, de-identification, and the "
-        "applicable ethics decision."
+        "Ethics and consent: No ethics-committee approval was required. The analysed "
+        "recordings are anonymized public demonstration footage used for algorithmic "
+        "evaluation; they do not constitute identifiable human-participant research data "
+        "for the purposes reported here. No participant image is reproduced."
     )
     insert_statement(
         "Data availability: Analysis code, derived aggregate tables, and de-identified "
-        "session-level outputs can be made available subject to institutional approval. "
-        "Source videos are not publicly released because provenance and participant-use "
-        "permissions require verification."
+        "session-level outputs can be made available on request. Source demonstration "
+        "videos are not separately released as a public dataset in this submission."
     )
-    set_text(
-        ai_statement,
-        "Use of generative AI tools: AI-assisted language revision, consistency checking, "
-        "and code review were performed with GPT-5.6 Sol in Cursor on 28 July 2026. "
-        "The authors reviewed the resulting text and remain responsible for the data, "
-        "methods, interpretation, references, and final manuscript.",
-        size=11,
-    )
+    remove_paragraph(template_ai)
 
 
 def remove_missing_photo_placeholders(doc):
@@ -785,21 +876,56 @@ def remove_missing_photo_placeholders(doc):
 
 
 def main():
-    import shutil
+    parser = argparse.ArgumentParser(description="Build the article-2 HAIT DOCX.")
+    parser.add_argument("--template", default=None, help=f"defaults to {DEFAULT_TEMPLATE_GLOB}")
+    parser.add_argument("--manuscript", default=DEFAULT_MANUSCRIPT)
+    parser.add_argument("--analysis-dir", default=DEFAULT_ANALYSIS_DIR)
+    parser.add_argument("--agreement-dir", default=DEFAULT_AGREEMENT_DIR)
+    parser.add_argument("--output", default=DEFAULT_OUTPUT)
+    args = parser.parse_args()
 
-    shutil.copyfile(TEMPLATE, OUTPUT)
-    doc = Document(OUTPUT)
+    template = args.template or glob.glob(DEFAULT_TEMPLATE_GLOB)[0]
+    analysis_dir = Path(args.analysis_dir)
+    fig_dir = analysis_dir / "figures"
+    tables_dir = analysis_dir / "article_tables"
+    agreement_dir = Path(args.agreement_dir)
+    output = Path(args.output)
 
-    rewrite_first_page(doc)
+    if Path(template).resolve() == output.resolve():
+        raise SystemExit("refusing to overwrite the template with the output")
+    v2 = Path("article_package") / "Стаття_Аспірант_Синюк_HAIT_article2_v2.docx"
+    if v2.exists() and output.resolve() == v2.resolve():
+        raise SystemExit("refusing to overwrite the frozen v2 DOCX")
+
+    content = load_content(args.manuscript)
+
+    missing = [
+        str(path)
+        for path in (
+            [tables_dir / name for name in GENERATED_TABLE_FILES.values()]
+            + [tables_dir / "table5_sensitivity.csv", tables_dir / "table7_robustness_ranking.csv"]
+            + [agreement_dir / "annotation_agreement_summary.csv"]
+            + [fig_dir / name for name, _ in FIGURE_TITLES.values()]
+        )
+        if not path.exists()
+    ]
+    if missing:
+        raise SystemExit("missing required build inputs:\n  " + "\n  ".join(missing))
+
+    shutil.copyfile(template, output)
+    doc = Document(str(output))
+
+    rewrite_first_page(doc, content)
     intro_p, anchor_p = find_body_anchor(doc)
+    body_sect = anchor_p._p.find(qn("w:pPr")).find(qn("w:sectPr"))
     remove_old_body(doc, intro_p, anchor_p)
-    build_body(doc, anchor_p)
-    rewrite_ukrainian(doc)
+    build_body(doc, anchor_p, body_sect, content, fig_dir, tables_dir, agreement_dir)
+    rewrite_ukrainian(doc, content)
     rewrite_references_and_declarations(doc)
     remove_missing_photo_placeholders(doc)
 
-    doc.save(OUTPUT)
-    print(f"saved {OUTPUT}")
+    doc.save(str(output))
+    print(f"saved {output}")
 
 
 if __name__ == "__main__":

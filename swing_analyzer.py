@@ -183,7 +183,11 @@ class SwingAnalyzer:
                 seg_fs.append(self.kalman.transition(dt_next))
 
             if len(seg_states) >= 3 and len(seg_fs) == len(seg_states) - 1:
-                xs_s, _ = rts_smooth(seg_states, seg_covs, seg_fs)
+                # Pass the same process-noise matrix used by Kalman2D.predict so
+                # RTS predicted covariance matches the forward filter.
+                xs_s, _ = rts_smooth(
+                    seg_states, seg_covs, seg_fs, Q=self.kalman.Q_diag
+                )
             else:
                 xs_s = seg_states
 
